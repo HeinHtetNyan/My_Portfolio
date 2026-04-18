@@ -33,6 +33,7 @@ async function fetchReposREST(username) {
 }
 
 export async function fetchRepos(username) {
+  if (import.meta.env.DEV) return fetchReposREST(username)
   try {
     return await fetchReposFromProxy()
   } catch (err) {
