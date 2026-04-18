@@ -94,3 +94,4 @@ The project is optimized for deployment on **Vercel**:
 ## 📄 License
 
 This project is open-source and available under the [MIT License](LICENSE).
+<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/6f67553f-bac1-4118-bcfa-92d7140c5f87" />
