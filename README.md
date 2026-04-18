@@ -1,4 +1,4 @@
-<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/6f67553f-bac1-4118-bcfa-92d7140c5f87" />
+https://github.com/HeinHtetNyan/My_Portfolio/blob/main/Screenshot%202026-04-19%20010539.png?raw=true
 # Portfolio Website
 
 A modern, high-performance, and fully responsive portfolio website built with **React**, **Vite**, and **Tailwind CSS**. Designed with an obsession for detail, featuring smooth page transitions and a minimalist aesthetic.
