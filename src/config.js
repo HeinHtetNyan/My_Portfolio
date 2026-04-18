@@ -23,6 +23,9 @@ export const site = {
     linkedin: e.VITE_LINKEDIN_USERNAME
       ? `https://linkedin.com/in/${e.VITE_LINKEDIN_USERNAME}`
       : null,
+    tiktok: e.VITE_TIKTOK_USERNAME
+      ? `https://tiktok.com/@${e.VITE_TIKTOK_USERNAME}`
+      : null,
   },
   seo: {
     description: e.VITE_META_DESCRIPTION ?? 'Software engineer building modern digital experiences.',
@@ -48,6 +51,11 @@ export const socialLinks = [
     label: 'LinkedIn',
     href: site.social.linkedin,
     handle: `in/${e.VITE_LINKEDIN_USERNAME}`,
+  },
+  site.social.tiktok && {
+    label: 'TikTok',
+    href: site.social.tiktok,
+    handle: `@${e.VITE_TIKTOK_USERNAME}`,
   },
   site.contact.email && {
     label: 'Email',

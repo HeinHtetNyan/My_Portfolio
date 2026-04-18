@@ -14,52 +14,7 @@ function validate(data) {
   return errors
 }
 
-function Field({ label, id, error, ...props }) {
-  const baseClass = `w-full bg-transparent border-0 border-b pb-3 pt-1 text-base text-white placeholder-neutral-800 outline-none transition-colors duration-300 resize-none ${
-    error
-      ? 'border-red-500/40'
-      : 'border-neutral-800 focus:border-neutral-500'
-  }`
-
-  return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="label-sm">
-        {label}
-      </label>
-      {props.as === 'textarea' ? (
-        <textarea
-          id={id}
-          className={`${baseClass} min-h-[120px]`}
-          aria-describedby={error ? `${id}-error` : undefined}
-          aria-invalid={!!error}
-          {...props}
-        />
-      ) : (
-        <input
-          id={id}
-          className={baseClass}
-          aria-describedby={error ? `${id}-error` : undefined}
-          aria-invalid={!!error}
-          {...props}
-        />
-      )}
-      <AnimatePresence>
-        {error && (
-          <motion.p
-            id={`${id}-error`}
-            role="alert"
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="text-xs text-red-400"
-          >
-            {error}
-          </motion.p>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
+const inputClass = 'w-full bg-neutral-900 text-white text-base placeholder-neutral-600 outline-none px-5 py-4 resize-none transition-colors duration-200 focus:bg-neutral-800'
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
@@ -96,16 +51,15 @@ export default function ContactForm() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
-          className="py-20 text-center"
+          className="py-20 flex flex-col gap-4"
         >
-          <p className="text-5xl mb-6 select-none">✓</p>
-          <p className="text-white font-semibold text-xl mb-2">Message sent.</p>
-          <p className="text-neutral-500 text-sm mb-10">I'll get back to you soon.</p>
+          <p className="text-white font-semibold text-2xl">Message sent.</p>
+          <p className="text-neutral-500 text-sm">I'll get back to you within 24 hours.</p>
           <button
             onClick={() => setStatus('idle')}
-            className="label-sm text-neutral-700 hover:text-white transition-colors"
+            className="mt-6 label-sm text-neutral-700 hover:text-white transition-colors self-start"
           >
-            Send another
+            Send another →
           </button>
         </motion.div>
       ) : (
@@ -115,55 +69,71 @@ export default function ContactForm() {
           noValidate
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex flex-col gap-10"
+          className="flex flex-col gap-px"
         >
-          <Field
-            label="Name"
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Your name"
-            value={form.name}
-            onChange={handleChange}
-            error={errors.name}
-            autoComplete="name"
-          />
-          <Field
-            label="Email"
-            id="email"
-            name="email"
-            type="email"
-            placeholder="your@email.com"
-            value={form.email}
-            onChange={handleChange}
-            error={errors.email}
-            autoComplete="email"
-          />
-          <Field
-            label="Message"
-            id="message"
-            name="message"
-            as="textarea"
-            placeholder="What's on your mind?"
-            value={form.message}
-            onChange={handleChange}
-            error={errors.message}
-          />
+          {/* Name */}
+          <div>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Name"
+              value={form.name}
+              onChange={handleChange}
+              autoComplete="name"
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? 'name-error' : undefined}
+              className={inputClass}
+            />
+            {errors.name && <p id="name-error" role="alert" className="text-xs text-red-400 px-5 py-2 bg-neutral-900">{errors.name}</p>}
+          </div>
+
+          {/* Email */}
+          <div>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={handleChange}
+              autoComplete="email"
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? 'email-error' : undefined}
+              className={inputClass}
+            />
+            {errors.email && <p id="email-error" role="alert" className="text-xs text-red-400 px-5 py-2 bg-neutral-900">{errors.email}</p>}
+          </div>
+
+          {/* Message */}
+          <div>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="Message"
+              value={form.message}
+              onChange={handleChange}
+              aria-invalid={!!errors.message}
+              aria-describedby={errors.message ? 'message-error' : undefined}
+              className={`${inputClass} min-h-[220px]`}
+            />
+            {errors.message && <p id="message-error" role="alert" className="text-xs text-red-400 px-5 py-2 bg-neutral-900">{errors.message}</p>}
+          </div>
 
           {status === 'error' && (
-            <p className="text-sm text-red-400" role="alert">
+            <p className="text-xs text-red-400 px-5 py-3 bg-neutral-900" role="alert">
               Something went wrong. Try again or email directly.
             </p>
           )}
 
+          {/* Submit */}
           <motion.button
             type="submit"
             disabled={status === 'loading'}
-            whileHover={{ opacity: 0.8 }}
-            whileTap={{ scale: 0.98 }}
-            className="self-start text-sm font-semibold uppercase tracking-widest text-white border-b border-white pb-0.5 hover:border-neutral-500 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            whileTap={{ scale: 0.99 }}
+            className="w-full bg-white text-black text-sm font-semibold py-5 hover:bg-neutral-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {status === 'loading' ? 'Sending...' : 'Send message →'}
+            {status === 'loading' ? 'Sending...' : 'Submit'}
           </motion.button>
         </motion.form>
       )}

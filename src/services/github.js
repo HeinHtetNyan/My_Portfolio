@@ -22,7 +22,7 @@ export async function fetchRepos(username) {
   const repos = await res.json()
 
   return repos
-    .filter((r) => !r.fork && r.description)
+    .filter((r) => !r.fork)
     .sort((a, b) => b.stargazers_count - a.stargazers_count)
 }
 

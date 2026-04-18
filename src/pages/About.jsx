@@ -1,16 +1,17 @@
+import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 import Footer from '../components/layout/Footer'
 import useScrollReveal from '../hooks/useScrollReveal'
-import { experience, tools } from '../data/about'
+import { stats, bio, experience, tools } from '../data/about'
 import { site } from '../config'
 
 function Reveal({ children, className = '', delay = 0 }) {
-  const { ref, isVisible } = useScrollReveal({ threshold: 0.08 })
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.06 })
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 40 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
       className={className}
@@ -32,128 +33,176 @@ export default function About() {
       {/* ══════════════════════════════════════════
           HERO
       ══════════════════════════════════════════ */}
-      <section className="section-padding pt-36 pb-24">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+      <section className="section-padding pt-32 pb-20">
+        <motion.p
+          className="label-sm mb-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
         >
-          <p className="label-sm mb-10">About me</p>
-          <h1 className="heading-hero text-white">
-            Engineer
-            <span className="text-neutral-800">.</span>
-            <br />
-            <span className="text-neutral-800">Designer.</span>
-            <br />
-            Builder
-            <span className="text-neutral-800">.</span>
-          </h1>
-        </motion.div>
+          about
+        </motion.p>
+        <motion.h1
+          className="text-white font-black leading-[1] tracking-tight"
+          style={{ fontSize: 'clamp(42px, 7vw, 100px)', letterSpacing: '-0.03em' }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {site.owner.tagline}
+        </motion.h1>
       </section>
 
       {/* ══════════════════════════════════════════
-          INTRO + IMAGE
+          STATS + PHOTO + BIO
       ══════════════════════════════════════════ */}
-      <section className="section-padding py-24 md:py-32 divider border-t">
-        <div className="grid md:grid-cols-2 gap-16 md:gap-28 items-start">
+      <section className="section-padding pb-0 divider border-t">
 
-          <Reveal>
-            <p
-              className="text-white font-light leading-[1.25] mb-10 tracking-tight"
-              style={{ fontSize: 'clamp(26px, 3.5vw, 42px)' }}
-            >
-              {site.owner.bio}
-            </p>
-            <p className="text-neutral-500 leading-relaxed text-base">
-              With years of experience building products that scale, I've developed a methodical approach
-              to solving complex problems without sacrificing elegance or craft.
-            </p>
-          </Reveal>
+        {/* Stats row */}
+        <div className="grid grid-cols-3 border-b border-white/[0.06] py-8">
+          {stats.map((stat) => (
+            <div key={stat.label}>
+              <p className="label-sm mb-3">{stat.label}</p>
+              <p className="text-white font-semibold text-lg md:text-xl">{stat.value}</p>
+            </div>
+          ))}
+        </div>
 
-          <Reveal delay={0.12}>
-            <div className="relative aspect-square overflow-hidden bg-neutral-950">
+        {/* Photo + Bio */}
+        <div className="grid md:grid-cols-2 gap-0 items-stretch">
+
+          {/* Photo */}
+          <Reveal className="border-r border-white/[0.06] py-16 pr-0 md:pr-16">
+            <div className="relative w-full overflow-hidden bg-neutral-950" style={{ aspectRatio: '3 / 4' }}>
               <div className="absolute inset-0 flex items-center justify-center select-none pointer-events-none">
                 <span
                   className="font-black text-neutral-900"
-                  style={{ fontSize: 'clamp(120px, 20vw, 280px)', lineHeight: 1 }}
+                  style={{ fontSize: 'clamp(120px, 22vw, 300px)', lineHeight: 1 }}
                 >
                   {site.name.replace(/\./g, '').slice(0, 1).toUpperCase()}
                 </span>
               </div>
               <div className="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/90 via-black/30 to-transparent">
-                <p className="text-white font-semibold text-lg">{site.owner.name}</p>
+                <p className="text-white font-semibold">{site.owner.name}</p>
                 <p className="text-neutral-500 text-sm mt-1">{site.owner.title}</p>
               </div>
             </div>
+          </Reveal>
+
+          {/* Bio */}
+          <Reveal delay={0.12} className="py-16 pl-0 md:pl-16 flex items-center">
+            <p
+              className="text-white font-light leading-[1.3] tracking-tight"
+              style={{ fontSize: 'clamp(22px, 2.8vw, 36px)' }}
+            >
+              {bio}
+            </p>
           </Reveal>
 
         </div>
       </section>
 
       {/* ══════════════════════════════════════════
-          EXPERIENCE TIMELINE
+          WORK EXPERIENCE
       ══════════════════════════════════════════ */}
-      <section className="section-padding py-24 md:py-32 divider border-t">
-        <Reveal className="mb-16 md:mb-20">
-          <p className="label-sm mb-8">Career</p>
-          <h2 className="heading-xl text-white">
-            Experience<span className="text-neutral-800">.</span>
-          </h2>
-        </Reveal>
+      <section className="section-padding py-0 divider border-t">
 
-        <div className="flex flex-col">
+        <div className="py-8 border-b border-white/[0.06]">
+          <p className="label-sm" style={{ fontFamily: 'monospace' }}>.work experience</p>
+        </div>
+
+        <div>
           {experience.map((job, i) => (
             <Reveal
               key={job.id}
-              delay={i * 0.09}
-              className={`grid md:grid-cols-[280px_1fr] gap-6 md:gap-16 py-10 md:py-12 ${
-                i < experience.length - 1 ? 'border-b border-white/[0.06]' : ''
-              }`}
+              delay={i * 0.07}
+              className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr_1.4fr] gap-6 md:gap-10 py-14 md:py-20 border-b border-white/[0.06] last:border-0 items-start"
             >
+              {/* Period */}
+              <p
+                className="text-white font-black tracking-tight"
+                style={{ fontSize: 'clamp(22px, 2.5vw, 36px)', letterSpacing: '-0.02em' }}
+              >
+                {job.period}
+              </p>
+
+              {/* Company + Role */}
               <div>
-                <p className="label-sm mb-4">{job.period}</p>
-                <p className="text-white font-semibold text-lg leading-snug">{job.role}</p>
-                <p className="text-neutral-600 text-sm mt-1.5">{job.company}</p>
+                <p
+                  className="text-white font-black tracking-tight leading-tight"
+                  style={{ fontSize: 'clamp(22px, 2.5vw, 36px)', letterSpacing: '-0.02em' }}
+                >
+                  {job.company}
+                </p>
+                <p className="text-neutral-600 text-sm mt-2">{job.role}</p>
               </div>
-              <div className="flex items-center">
-                <p className="text-neutral-400 leading-relaxed">{job.description}</p>
-              </div>
+
+              {/* Description */}
+              <p className="text-neutral-500 text-sm leading-relaxed md:pt-1">
+                {job.description}
+              </p>
             </Reveal>
           ))}
         </div>
       </section>
 
       {/* ══════════════════════════════════════════
-          TOOLS / STACK
+          STACK
       ══════════════════════════════════════════ */}
-      <section className="section-padding py-24 md:py-32 divider border-t">
-        <Reveal className="mb-16 md:mb-20">
-          <p className="label-sm mb-8">Stack</p>
-          <h2 className="heading-xl text-white">
-            Tools<span className="text-neutral-800">.</span>
-          </h2>
-        </Reveal>
+      <section className="section-padding py-0 divider border-t">
 
-        <Reveal>
-          <div className="flex flex-wrap items-baseline gap-x-1 gap-y-2">
+        <div className="py-8 border-b border-white/[0.06]">
+          <p className="label-sm" style={{ fontFamily: 'monospace' }}>.stack</p>
+        </div>
+
+        <Reveal className="py-12">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {tools.map((tool, i) => (
-              <motion.span
-                key={tool}
+              <motion.div
+                key={tool.name}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                viewport={{ once: true, margin: '-80px' }}
+                viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: i * 0.04 }}
-                whileHover={{ color: '#ffffff' }}
-                className="text-neutral-700 font-bold cursor-default transition-colors duration-200"
-                style={{ fontSize: 'clamp(22px, 3vw, 36px)', letterSpacing: '-0.02em' }}
+                className="border-b border-r border-white/[0.06] p-8 flex flex-col gap-4"
               >
-                {tool}
-                {i < tools.length - 1 && (
-                  <span className="text-neutral-900 font-thin mx-2 text-xl">/</span>
-                )}
-              </motion.span>
+                <div className="w-12 h-12 rounded bg-neutral-950 flex items-center justify-center p-2.5">
+                  <img
+                    src={tool.icon}
+                    alt={tool.name}
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                    onError={(e) => { e.currentTarget.style.display = 'none' }}
+                  />
+                </div>
+                <div>
+                  <p className="text-white font-semibold text-base">{tool.name}</p>
+                  <p className="label-sm mt-1" style={{ fontFamily: 'monospace' }}>{tool.category}</p>
+                </div>
+              </motion.div>
             ))}
           </div>
+        </Reveal>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          CTA
+      ══════════════════════════════════════════ */}
+      <section className="section-padding py-28 md:py-40 divider border-t">
+        <Reveal>
+          <h2
+            className="text-white font-black leading-[1.05] tracking-tight mb-16 max-w-4xl"
+            style={{ fontSize: 'clamp(36px, 6vw, 86px)', letterSpacing: '-0.03em' }}
+          >
+            i'm open for freelance projects, feel free to email me to see how can we collaborate
+          </h2>
+
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-3 border border-white/20 px-8 py-4 text-sm font-semibold text-white hover:bg-white hover:text-black transition-all duration-300"
+          >
+            contact me ↗
+          </Link>
         </Reveal>
       </section>
 

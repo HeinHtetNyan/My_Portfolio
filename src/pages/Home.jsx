@@ -1,10 +1,21 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 import Footer from '../components/layout/Footer'
 import useScrollReveal from '../hooks/useScrollReveal'
-import { featuredProjects } from '../data/projects'
+import { fetchRepos } from '../services/github'
 import { site } from '../config'
+
+/* ─── Language → card theme ─── */
+const LANG_THEME = {
+  TypeScript:  { accent: '#080d1a', titleColor: '#60a5fa', barBg: '#0b1120' },
+  JavaScript:  { accent: '#1a1600', titleColor: '#fbbf24', barBg: '#221c00' },
+  Python:      { accent: '#0a1020', titleColor: '#818cf8', barBg: '#0d1428' },
+  Go:          { accent: '#001a14', titleColor: '#34d399', barBg: '#00221a' },
+  Rust:        { accent: '#1a0800', titleColor: '#fb923c', barBg: '#220e00' },
+  default:     { accent: '#111111', titleColor: '#ffffff', barBg: '#1a1a1a' },
+}
 
 /* ─── Scroll-reveal wrapper ─── */
 function Reveal({ children, className = '', delay = 0, y = 50 }) {
@@ -23,33 +34,33 @@ function Reveal({ children, className = '', delay = 0, y = 50 }) {
 }
 
 /* ─── Sticky layered project card ─── */
-function ProjectCard({ project, index }) {
+function ProjectCard({ repo, index }) {
+  const theme = LANG_THEME[repo.language] ?? LANG_THEME.default
+  const year = new Date(repo.pushed_at || repo.updated_at).getFullYear()
+  const image = `https://opengraph.githubassets.com/1/${site.github.username}/${repo.name}`
+
   return (
-    <div
-      style={{
-        position: 'sticky',
-        top: '56px',          /* navbar height */
-        zIndex: index + 1,
-      }}
-    >
-      <Link
-        to={project.href}
+    <div style={{ position: 'sticky', top: '56px', zIndex: index + 1 }}>
+      <a
+        href={repo.html_url}
+        target="_blank"
+        rel="noopener noreferrer"
         className="group block"
-        aria-label={`View ${project.title}`}
+        aria-label={`View ${repo.name} on GitHub`}
       >
-        {/* ── Top info bar ── */}
+        {/* Top info bar */}
         <div
           className="flex items-center justify-between px-6 md:px-12 lg:px-24 py-3"
-          style={{ backgroundColor: project.barBg }}
+          style={{ backgroundColor: theme.barBg }}
         >
-          <span className="label-sm tabular-nums">{project.year}</span>
-          <span className="label-sm">{project.tag}</span>
+          <span className="label-sm tabular-nums">{year}</span>
+          <span className="label-sm">{repo.language ?? 'Code'}</span>
         </div>
 
-        {/* ── Title row on accent background ── */}
+        {/* Title + arrow */}
         <div
           className="flex items-end justify-between px-6 md:px-12 lg:px-24 pt-10 pb-8"
-          style={{ backgroundColor: project.accent }}
+          style={{ backgroundColor: theme.accent }}
         >
           <h3
             className="font-black tracking-tight transition-opacity duration-300 group-hover:opacity-80"
@@ -57,15 +68,14 @@ function ProjectCard({ project, index }) {
               fontSize: 'clamp(48px, 8vw, 110px)',
               lineHeight: 0.9,
               letterSpacing: '-0.04em',
-              color: project.titleColor,
+              color: theme.titleColor,
             }}
           >
-            {project.title}
+            {repo.name}
           </h3>
-
           <motion.span
             className="text-3xl md:text-4xl shrink-0 ml-6 mb-1"
-            style={{ color: project.titleColor }}
+            style={{ color: theme.titleColor }}
             whileHover={{ x: 4, y: -4 }}
             transition={{ duration: 0.2 }}
           >
@@ -73,14 +83,11 @@ function ProjectCard({ project, index }) {
           </motion.span>
         </div>
 
-        {/* ── Full-width image ── */}
-        <div
-          className="w-full overflow-hidden"
-          style={{ backgroundColor: project.accent }}
-        >
+        {/* Full-width image */}
+        <div className="w-full overflow-hidden" style={{ backgroundColor: theme.accent }}>
           <motion.img
-            src={project.image}
-            alt={project.title}
+            src={image}
+            alt={repo.name}
             loading="lazy"
             className="w-full object-cover"
             style={{ aspectRatio: '16 / 7', display: 'block' }}
@@ -88,13 +95,48 @@ function ProjectCard({ project, index }) {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           />
         </div>
-      </Link>
+      </a>
+    </div>
+  )
+}
+
+/* ─── Skeleton card ─── */
+function SkeletonCard({ index }) {
+  return (
+    <div style={{ position: 'sticky', top: '56px', zIndex: index + 1 }}>
+      <motion.div
+        animate={{ opacity: [0.3, 0.6, 0.3] }}
+        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: index * 0.2 }}
+        className="bg-neutral-950"
+      >
+        <div className="h-10 bg-neutral-900" />
+        <div className="h-36 bg-neutral-950 px-6 md:px-12 lg:px-24 flex items-end pb-8">
+          <div className="h-16 w-2/3 bg-neutral-900 rounded" />
+        </div>
+        <div className="w-full bg-neutral-900" style={{ aspectRatio: '16 / 7' }} />
+      </motion.div>
     </div>
   )
 }
 
 /* ─── Page ─── */
 export default function Home() {
+  const [repos, setRepos] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!site.github.username) { setLoading(false); return }
+    fetchRepos(site.github.username)
+      .then((data) => {
+        const starred = data.filter((r) => r.stargazers_count > 0)
+        setRepos(starred.length > 0 ? starred : data)
+      })
+      .catch(() => setRepos([]))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const showcaseItems = repos
+
   return (
     <>
       <Helmet>
@@ -175,7 +217,6 @@ export default function Home() {
 
       {/* ══════════════════════════════════════════
           STACKED PROJECT SHOWCASE
-          — no section-padding so images are full-width
       ══════════════════════════════════════════ */}
       <section className="pt-20 pb-0">
 
@@ -189,16 +230,24 @@ export default function Home() {
           </Link>
         </Reveal>
 
-        {/* Sticky stack */}
         <div>
-          {featuredProjects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} />
-          ))}
+          {loading
+            ? [0, 1, 2, 3].map((i) => <SkeletonCard key={i} index={i} />)
+            : showcaseItems.length > 0
+              ? showcaseItems.map((repo, i) => (
+                  <ProjectCard key={repo.id} repo={repo} index={i} />
+                ))
+              : (
+                <div className="section-padding py-20 text-neutral-700 text-sm">
+                  No public repositories found.
+                </div>
+              )
+          }
         </div>
       </section>
 
       {/* Spacer so content below clears the sticky cards */}
-      <div style={{ height: `${featuredProjects.length * 20}px` }} />
+      <div style={{ height: `${showcaseItems.length * 20}px` }} />
 
       {/* ══════════════════════════════════════════
           ABOUT PREVIEW
