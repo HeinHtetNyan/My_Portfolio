@@ -37,7 +37,8 @@ function Reveal({ children, className = '', delay = 0, y = 50 }) {
 function ProjectCard({ repo, index }) {
   const theme = LANG_THEME[repo.language] ?? LANG_THEME.default
   const year = new Date(repo.pushed_at || repo.updated_at).getFullYear()
-  const image = `https://opengraph.githubassets.com/1/${site.github.username}/${repo.name}`
+  const fallbackImg = `https://opengraph.githubassets.com/1/${site.github.username}/${repo.name}`
+  const image = repo.openGraphImageUrl ?? fallbackImg
 
   return (
     <div style={{ position: 'sticky', top: '56px', zIndex: index + 1 }}>
@@ -91,6 +92,7 @@ function ProjectCard({ repo, index }) {
             loading="lazy"
             className="w-full object-cover"
             style={{ aspectRatio: '16 / 7', display: 'block' }}
+            onError={(e) => { e.currentTarget.src = fallbackImg }}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           />

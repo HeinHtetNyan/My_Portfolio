@@ -26,7 +26,8 @@ function LangDot({ lang }) {
 
 export default function ProjectCard({ repo, index }) {
   const { ref, isVisible } = useScrollReveal({ threshold: 0.06 })
-  const previewImg = `https://opengraph.githubassets.com/1/${site.github.username}/${repo.name}`
+  const fallbackImg = `https://opengraph.githubassets.com/1/${site.github.username}/${repo.name}`
+  const previewImg = repo.openGraphImageUrl ?? fallbackImg
   const year = new Date(repo.pushed_at || repo.updated_at).getFullYear()
 
   return (
@@ -95,6 +96,7 @@ export default function ProjectCard({ repo, index }) {
             loading="lazy"
             className="w-full object-cover"
             style={{ aspectRatio: '16 / 9', display: 'block' }}
+            onError={(e) => { e.currentTarget.src = fallbackImg }}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           />
