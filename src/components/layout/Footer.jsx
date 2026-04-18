@@ -19,7 +19,7 @@ export default function Footer() {
             {site.name}
           </Link>
           <p className="text-neutral-700 text-sm mt-3 max-w-[220px] leading-relaxed">
-            {site.owner.tagline}
+            Designing and building reliable backend systems.
           </p>
         </div>
 

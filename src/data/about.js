@@ -1,46 +1,54 @@
 export const stats = [
-  { label: 'experience', value: '3+ years' },
-  { label: 'location', value: 'Yangon (MMT)' },
-  { label: 'freelance', value: 'Available' },
+  { label: 'experience', value: '1+ years' },
+  { label: 'location',   value: 'Bangkok (ICT)' },
+  { label: 'status',     value: 'Open to work' },
 ]
 
-export const bio = `I build robust backend systems and APIs that power seamless digital experiences. Passionate about performance, clean architecture, and scalable solutions that stand the test of time.`
+export const bio = [
+  `I'm a backend developer currently studying Information and Communication Technology, with a background in customer service and data work.`,
+  `That experience helped me develop strong problem-solving skills, attention to detail, and the ability to work in fast-paced environments — which I now apply to building backend systems.`,
+  `I focus on Python, FastAPI, and PostgreSQL, and I'm continuously improving my skills by building real projects and learning modern backend practices.`,
+]
 
 export const experience = [
   {
     id: 1,
-    period: '2023 — Now',
-    company: 'Freelance',
-    role: 'Backend Developer',
-    description: 'Building scalable APIs and backend systems for clients across various industries. Focused on Node.js, Python, and cloud infrastructure.',
+    period: '2019 — 2020',
+    company: 'Infinity Digital Store',
+    role: 'Customer Service',
+    description: 'Handled customer inquiries and data entry while improving communication and problem-solving skills in a fast-paced environment.',
   },
   {
     id: 2,
-    period: '2022 — 2023',
-    company: 'Your Company',
-    role: 'Backend Developer',
-    description: 'Designed and maintained RESTful APIs serving thousands of daily requests. Improved system performance and reduced latency by 40%.',
+    period: '2021 — 2023',
+    company: 'TK Plastic',
+    role: 'Accounting Assistant',
+    description: 'Managed daily financial records and transactions using Google Sheets. Maintained accurate expense tracking and supported organization and review of business finances.',
   },
   {
     id: 3,
-    period: '2021 — 2022',
-    company: 'Your Company',
-    role: 'Junior Developer',
-    description: 'Developed backend services and contributed to database design and optimization across multiple product teams.',
+    period: '2023 — 2026',
+    company: 'Independent Projects',
+    role: 'Backend Developer',
+    description: 'Built backend systems and APIs using Python, FastAPI, and PostgreSQL. Focused on clean architecture and scalable system design through personal and academic projects.',
+  },
+  {
+    id: 4,
+    period: '2026 Jan — Now',
+    company: 'Infinity Digital LLC',
+    role: 'Backend Developer Intern',
+    description: 'Built and maintained backend APIs using FastAPI for an airline booking system. Designed PostgreSQL database, implemented booking logic and validation, integrated external APIs, and improved performance with Redis caching.',
   },
 ]
 
 export const tools = [
-  { name: 'Node.js',    category: 'runtime',    icon: 'https://cdn.simpleicons.org/nodedotjs/ffffff' },
   { name: 'Python',     category: 'language',   icon: 'https://cdn.simpleicons.org/python/ffffff' },
+  { name: 'FastAPI',    category: 'framework',  icon: 'https://cdn.simpleicons.org/fastapi/ffffff' },
+  { name: 'Node.js',    category: 'runtime',    icon: 'https://cdn.simpleicons.org/nodedotjs/ffffff' },
   { name: 'PostgreSQL', category: 'database',   icon: 'https://cdn.simpleicons.org/postgresql/ffffff' },
-  { name: 'Docker',     category: 'devops',     icon: 'https://cdn.simpleicons.org/docker/ffffff' },
   { name: 'Redis',      category: 'cache',      icon: 'https://cdn.simpleicons.org/redis/ffffff' },
-  { name: 'AWS',        category: 'cloud',      icon: 'https://cdn.simpleicons.org/amazonwebservices/ffffff' },
-  { name: 'TypeScript', category: 'language',   icon: 'https://cdn.simpleicons.org/typescript/ffffff' },
-  { name: 'Git',        category: 'version control', icon: 'https://cdn.simpleicons.org/git/ffffff' },
-  { name: 'Linux',      category: 'os',         icon: 'https://cdn.simpleicons.org/linux/ffffff' },
-  { name: 'Express',    category: 'framework',  icon: 'https://cdn.simpleicons.org/express/ffffff' },
-  { name: 'MongoDB',    category: 'database',   icon: 'https://cdn.simpleicons.org/mongodb/ffffff' },
+  { name: 'Docker',     category: 'devops',     icon: 'https://cdn.simpleicons.org/docker/ffffff' },
   { name: 'Nginx',      category: 'server',     icon: 'https://cdn.simpleicons.org/nginx/ffffff' },
+  { name: 'Linux',      category: 'os',         icon: 'https://cdn.simpleicons.org/linux/ffffff' },
+  { name: 'Git',        category: 'version control', icon: 'https://cdn.simpleicons.org/git/ffffff' },
 ]

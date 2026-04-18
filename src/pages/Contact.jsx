@@ -52,7 +52,7 @@ export default function Contact() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
-          say hello
+          Say Hello
         </motion.h1>
 
         <motion.p
@@ -62,7 +62,8 @@ export default function Contact() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
-          let's collaborate. feel free to drop me a line about your project or follow me on social networks
+          Have a project in mind or need a backend system?
+          <span className="text-neutral-600"> Let's discuss your project.</span>
         </motion.p>
       </section>
 

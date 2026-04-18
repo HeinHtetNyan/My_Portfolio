@@ -177,7 +177,7 @@ export default function Home() {
               {site.owner.title.split(' ').slice(1).join(' ')} &
             </span>
             <br />
-            designer<span className="text-neutral-800">.</span>
+            System Builder<span className="text-neutral-800">.</span>
           </motion.h1>
         </div>
 
@@ -258,7 +258,7 @@ export default function Home() {
           <Reveal>
             <p className="label-sm mb-8">About</p>
             <p className="text-3xl md:text-4xl xl:text-5xl font-bold leading-[1.1] tracking-tight text-white mb-10">
-              {site.owner.bio}
+              I design and build scalable backend systems that power real-world applications. Experienced in Python, FastAPI, PostgreSQL, and distributed system design.
             </p>
             <Link
               to="/about"
@@ -277,14 +277,11 @@ export default function Home() {
 
           <Reveal delay={0.12}>
             <div className="relative aspect-square overflow-hidden bg-neutral-950">
-              <div className="absolute inset-0 flex items-center justify-center select-none pointer-events-none">
-                <span
-                  className="font-black text-neutral-900"
-                  style={{ fontSize: 'clamp(110px, 20vw, 260px)', lineHeight: 1 }}
-                >
-                  {site.name.replace(/\./g, '').slice(0, 1).toUpperCase()}
-                </span>
-              </div>
+              <img
+                src="/IMG_4558.JPG"
+                alt={site.owner.name}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
               <div className="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
                 <p className="text-white font-semibold">{site.owner.name}</p>
                 <p className="text-neutral-500 text-sm mt-1">{site.owner.title}</p>
@@ -300,14 +297,14 @@ export default function Home() {
       ══════════════════════════════════════════ */}
       <section className="section-padding py-32 md:py-44 divider border-t relative z-10 bg-black">
         <Reveal>
-          <p className="label-sm mb-10">Let's work together</p>
+          <p className="label-sm mb-10">Available for backend projects.</p>
 
           <h2 className="heading-hero text-white mb-12">
-            i'm open for
+            Building scalable
             <br />
-            <span className="text-neutral-800">freelance</span>
+            <span className="text-neutral-800">APIs and systems</span>
             <br />
-            projects<span className="text-neutral-800">.</span>
+            for real-world products<span className="text-neutral-800">.</span>
           </h2>
 
           <motion.div whileHover={{ x: 6 }} transition={{ duration: 0.25 }}>
@@ -316,7 +313,7 @@ export default function Home() {
               className="inline-flex items-center gap-4 text-lg font-semibold text-white group"
             >
               <span className="border-b-2 border-white pb-0.5 group-hover:border-neutral-600 transition-colors duration-300">
-                Say hello
+                Start a project
               </span>
               <span className="text-neutral-500 group-hover:text-white transition-colors">→</span>
             </Link>

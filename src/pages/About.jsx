@@ -74,14 +74,11 @@ export default function About() {
           {/* Photo */}
           <Reveal className="border-r border-white/[0.06] py-16 pr-0 md:pr-16">
             <div className="relative w-full overflow-hidden bg-neutral-950" style={{ aspectRatio: '3 / 4' }}>
-              <div className="absolute inset-0 flex items-center justify-center select-none pointer-events-none">
-                <span
-                  className="font-black text-neutral-900"
-                  style={{ fontSize: 'clamp(120px, 22vw, 300px)', lineHeight: 1 }}
-                >
-                  {site.name.replace(/\./g, '').slice(0, 1).toUpperCase()}
-                </span>
-              </div>
+              <img
+                src="/IMG_7558.JPG"
+                alt={site.owner.name}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
               <div className="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/90 via-black/30 to-transparent">
                 <p className="text-white font-semibold">{site.owner.name}</p>
                 <p className="text-neutral-500 text-sm mt-1">{site.owner.title}</p>
@@ -91,12 +88,17 @@ export default function About() {
 
           {/* Bio */}
           <Reveal delay={0.12} className="py-16 pl-0 md:pl-16 flex items-center">
-            <p
-              className="text-white font-light leading-[1.3] tracking-tight"
-              style={{ fontSize: 'clamp(22px, 2.8vw, 36px)' }}
-            >
-              {bio}
-            </p>
+            <div className="flex flex-col gap-6">
+              {bio.map((paragraph, paragraphIndex) => (
+                <p
+                  key={paragraphIndex}
+                  className="text-neutral-400 font-light leading-relaxed"
+                  style={{ fontSize: 'clamp(16px, 1.6vw, 20px)' }}
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </Reveal>
 
         </div>
@@ -194,7 +196,7 @@ export default function About() {
             className="text-white font-black leading-[1.05] tracking-tight mb-16 max-w-4xl"
             style={{ fontSize: 'clamp(36px, 6vw, 86px)', letterSpacing: '-0.03em' }}
           >
-            i'm open for freelance projects, feel free to email me to see how can we collaborate
+            Available for backend projects. Let's discuss your idea.
           </h2>
 
           <Link
