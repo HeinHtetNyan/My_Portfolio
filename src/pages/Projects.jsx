@@ -2,12 +2,45 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 import ProjectCard from '../components/projects/ProjectCard'
-import SkeletonCard from '../components/ui/SkeletonCard'
 import Footer from '../components/layout/Footer'
 import { fetchRepos, RateLimitError } from '../services/github'
 import { site } from '../config'
 
 const USERNAME = site.github.username
+
+/* ─── Skeleton row matching ProjectCard layout ─── */
+function SkeletonRow({ i }) {
+  return (
+    <motion.div
+      animate={{ opacity: [0.25, 0.5, 0.25] }}
+      transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: i * 0.15 }}
+      className="grid md:grid-cols-[1fr_1fr] gap-0 py-12 md:py-16 border-b border-white/[0.06]"
+    >
+      <div className="pr-0 md:pr-20 flex flex-col justify-between gap-10">
+        <div className="h-2 bg-neutral-900 rounded w-28" />
+        <div className="h-12 bg-neutral-900 rounded w-3/4" />
+      </div>
+      <div className="flex flex-col justify-between gap-6">
+        <div className="flex flex-col gap-3">
+          <div className="h-2 bg-neutral-900 rounded w-full" />
+          <div className="h-2 bg-neutral-900 rounded w-5/6" />
+          <div className="h-2 bg-neutral-900 rounded w-3/4" />
+        </div>
+        <div className="h-2 bg-neutral-900 rounded w-20" />
+      </div>
+    </motion.div>
+  )
+}
+
+/* ─── Status states ─── */
+function StateMessage({ heading, body }) {
+  return (
+    <div className="py-40 flex flex-col items-center text-center gap-4">
+      <p className="text-neutral-400 text-2xl font-semibold">{heading}</p>
+      {body && <p className="text-neutral-700 text-sm max-w-sm leading-relaxed">{body}</p>}
+    </div>
+  )
+}
 
 export default function Projects() {
   const [repos, setRepos] = useState([])
@@ -19,12 +52,8 @@ export default function Projects() {
       setStatus('no-username')
       return
     }
-
     fetchRepos(USERNAME)
-      .then((data) => {
-        setRepos(data)
-        setStatus('success')
-      })
+      .then((data) => { setRepos(data); setStatus('success') })
       .catch((err) => {
         setError(err.message)
         setStatus(err instanceof RateLimitError ? 'rate-limit' : 'error')
@@ -35,80 +64,67 @@ export default function Projects() {
     <>
       <Helmet>
         <title>{`Projects — ${site.name}`}</title>
-        <meta name="description" content="A curated collection of my software projects and experiments." />
+        <meta name="description" content="Open-source work and experiments. Built to learn, shipped to share." />
         <meta property="og:title" content={`Projects — ${site.name}`} />
       </Helmet>
 
-      <div className="section-padding pt-32 pb-8 border-b border-neutral-900">
+      {/* ── Page header ── */}
+      <section className="section-padding pt-36 pb-16">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-xs text-neutral-600 uppercase tracking-widest mb-6">GitHub</p>
-          <h1 className="heading-xl text-white mb-6">Projects.</h1>
-          <p className="text-neutral-500 max-w-lg leading-relaxed">
-            Open-source work and experiments. Built to learn, shipped to share.
-          </p>
+          <p className="label-sm mb-10">Open source — GitHub</p>
+          <h1 className="heading-hero text-white">
+            Projects
+            <span className="text-neutral-800">.</span>
+          </h1>
         </motion.div>
-      </div>
+      </section>
 
-      <section className="section-padding py-16">
-        {status === 'loading' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border border-neutral-900">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className={`${i % 3 !== 2 ? 'md:border-r' : ''} ${i < 3 ? 'border-b' : ''} border-neutral-900`}>
-                <SkeletonCard />
-              </div>
-            ))}
-          </div>
-        )}
+      {/* ── Project list ── */}
+      <section className="section-padding pb-20">
+        <div className="border-t border-white/[0.06]">
 
-        {status === 'no-username' && (
-          <div className="border border-neutral-900 p-16 text-center">
-            <p className="text-neutral-400 text-lg font-semibold mb-2">GitHub username not set.</p>
-            <p className="text-neutral-600 text-sm">
-              Add <code className="text-neutral-400">VITE_GITHUB_USERNAME</code> to your <code className="text-neutral-400">.env</code> file.
-            </p>
-          </div>
-        )}
+          {status === 'loading' && (
+            <div>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <SkeletonRow key={i} i={i} />
+              ))}
+            </div>
+          )}
 
-        {(status === 'error' || status === 'rate-limit') && (
-          <div className="border border-neutral-900 p-16 text-center">
-            <p className="text-neutral-400 text-lg font-semibold mb-2">
-              {status === 'rate-limit' ? 'Rate limit reached.' : 'Failed to load projects.'}
-            </p>
-            <p className="text-neutral-600 text-sm max-w-md mx-auto">{error}</p>
-          </div>
-        )}
+          {status === 'no-username' && (
+            <StateMessage
+              heading="GitHub username not set."
+              body="Add VITE_GITHUB_USERNAME to your .env file to display repositories here."
+            />
+          )}
 
-        {status === 'success' && repos.length === 0 && (
-          <div className="border border-neutral-900 p-16 text-center">
-            <p className="text-neutral-400 text-lg font-semibold mb-2">No projects found.</p>
-            <p className="text-neutral-600 text-sm">
-              Public repos without forks or empty descriptions are shown here.
-            </p>
-          </div>
-        )}
+          {(status === 'error' || status === 'rate-limit') && (
+            <StateMessage
+              heading={status === 'rate-limit' ? 'Rate limit reached.' : 'Failed to load.'}
+              body={error}
+            />
+          )}
 
-        {status === 'success' && repos.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-neutral-900">
-            {repos.map((repo, i) => (
-              <div
-                key={repo.id}
-                className={[
-                  i % 3 !== 2 ? 'lg:border-r border-neutral-900' : '',
-                  i % 2 !== 1 ? 'md:border-r border-neutral-900 lg:border-r-0' : '',
-                  Math.floor(i / 3) < Math.floor((repos.length - 1) / 3) ? 'lg:border-b border-neutral-900' : '',
-                  Math.floor(i / 2) < Math.floor((repos.length - 1) / 2) ? 'md:border-b border-neutral-900 lg:border-b-0' : '',
-                  'border-b border-neutral-900 last:border-b-0',
-                ].join(' ')}
-              >
-                <ProjectCard repo={repo} index={i} />
-              </div>
-            ))}
-          </div>
-        )}
+          {status === 'success' && repos.length === 0 && (
+            <StateMessage
+              heading="No projects found."
+              body="Public repos with descriptions and no forks are displayed here."
+            />
+          )}
+
+          {status === 'success' && repos.length > 0 && (
+            <div>
+              {repos.map((repo, i) => (
+                <ProjectCard key={repo.id} repo={repo} index={i} />
+              ))}
+            </div>
+          )}
+
+        </div>
       </section>
 
       <Footer />

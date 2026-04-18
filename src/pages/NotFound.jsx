@@ -9,22 +9,32 @@ export default function NotFound() {
       <Helmet>
         <title>{`404 — ${site.name}`}</title>
       </Helmet>
-      <div className="min-h-screen flex flex-col items-center justify-center section-padding text-center">
+
+      <div className="min-h-screen section-padding flex flex-col justify-end pb-24 pt-36">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-xs text-neutral-600 uppercase tracking-widest mb-6">404</p>
-          <h1 className="heading-xl text-neutral-800 mb-6">Not found.</h1>
-          <p className="text-neutral-600 mb-12 max-w-sm mx-auto">
-            This page doesn't exist. You may have mistyped the URL.
+          <p className="label-sm mb-10">404</p>
+
+          <h1
+            className="font-black text-neutral-900 mb-12"
+            style={{ fontSize: 'clamp(80px, 14vw, 180px)', lineHeight: 0.9, letterSpacing: '-0.04em' }}
+          >
+            Not<br />Found
+            <span className="text-black">.</span>
+          </h1>
+
+          <p className="text-neutral-700 text-base mb-12 max-w-xs leading-relaxed">
+            This page doesn't exist. You may have mistyped the address.
           </p>
+
           <Link
             to="/"
-            className="text-sm font-semibold uppercase tracking-widest border border-white text-white px-6 py-3 hover:bg-white hover:text-black transition-colors duration-200"
+            className="text-sm font-semibold text-white border-b border-white pb-0.5 hover:border-neutral-500 hover:text-neutral-400 transition-all duration-200"
           >
-            Go home
+            Go home →
           </Link>
         </motion.div>
       </div>

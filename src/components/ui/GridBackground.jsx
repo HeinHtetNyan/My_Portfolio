@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 export default function GridBackground() {
   const canvasRef = useRef(null)
-  const animationRef = useRef(null)
+  const animRef = useRef(null)
   const mouseRef = useRef({ x: -9999, y: -9999 })
   const dotsRef = useRef([])
 
@@ -11,79 +11,74 @@ export default function GridBackground() {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
 
+    const SPACING = 80
+
     const resize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
-      initDots()
+      buildDots()
     }
 
-    const initDots = () => {
-      const spacing = 60
-      const cols = Math.ceil(canvas.width / spacing) + 1
-      const rows = Math.ceil(canvas.height / spacing) + 1
+    const buildDots = () => {
+      const cols = Math.ceil(canvas.width / SPACING) + 1
+      const rows = Math.ceil(canvas.height / SPACING) + 1
       dotsRef.current = []
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-          dotsRef.current.push({ x: c * spacing, y: r * spacing })
+          dotsRef.current.push({ x: c * SPACING, y: r * SPACING })
         }
       }
     }
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      const mouse = mouseRef.current
-      const radius = 120
+      const { x: mx, y: my } = mouseRef.current
+      const R = 140
 
-      dotsRef.current.forEach(({ x, y }) => {
-        const dx = mouse.x - x
-        const dy = mouse.y - y
+      for (const { x, y } of dotsRef.current) {
+        const dx = mx - x
+        const dy = my - y
         const dist = Math.sqrt(dx * dx + dy * dy)
-        const proximity = Math.max(0, 1 - dist / radius)
-        const size = 1 + proximity * 2
-        const alpha = 0.15 + proximity * 0.5
+        const prox = Math.max(0, 1 - dist / R)
+        const alpha = 0.08 + prox * 0.35
+        const size = 0.8 + prox * 1.6
 
         ctx.beginPath()
         ctx.arc(x, y, size, 0, Math.PI * 2)
         ctx.fillStyle = `rgba(255,255,255,${alpha})`
         ctx.fill()
-      })
-    }
-
-    let isVisible = true
-
-    const loop = () => {
-      if (isVisible) {
-        draw()
-        animationRef.current = requestAnimationFrame(loop)
       }
     }
 
+    let active = true
+
+    const loop = () => {
+      if (!active) return
+      draw()
+      animRef.current = requestAnimationFrame(loop)
+    }
+
     const onVisibilityChange = () => {
-      isVisible = !document.hidden
-      if (isVisible) loop()
-    }
-
-    const onMouseMove = (e) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY }
-    }
-
-    const onMouseLeave = () => {
-      mouseRef.current = { x: -9999, y: -9999 }
+      active = !document.hidden
+      if (active) loop()
     }
 
     resize()
     loop()
 
-    window.addEventListener('resize', resize)
-    window.addEventListener('mousemove', onMouseMove, { passive: true })
-    document.addEventListener('mouseleave', onMouseLeave)
+    window.addEventListener('resize', resize, { passive: true })
+    window.addEventListener('mousemove', (e) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY }
+    }, { passive: true })
+    document.addEventListener('mouseleave', () => {
+      mouseRef.current = { x: -9999, y: -9999 }
+    })
     document.addEventListener('visibilitychange', onVisibilityChange)
 
     return () => {
-      cancelAnimationFrame(animationRef.current)
+      active = false
+      cancelAnimationFrame(animRef.current)
       window.removeEventListener('resize', resize)
-      window.removeEventListener('mousemove', onMouseMove)
-      document.removeEventListener('mouseleave', onMouseLeave)
       document.removeEventListener('visibilitychange', onVisibilityChange)
     }
   }, [])
@@ -93,7 +88,7 @@ export default function GridBackground() {
       <div className="fixed inset-0 z-0 grid-bg pointer-events-none" aria-hidden="true" />
       <canvas
         ref={canvasRef}
-        className="fixed inset-0 z-0 pointer-events-none"
+        className="fixed inset-0 z-0 pointer-events-none opacity-60"
         aria-hidden="true"
       />
     </>

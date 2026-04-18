@@ -1,67 +1,102 @@
 import { motion } from 'framer-motion'
 import useScrollReveal from '../../hooks/useScrollReveal'
 
+/* Language → accent color map */
+const LANG_COLORS = {
+  TypeScript: '#3178C6',
+  JavaScript: '#F7DF1E',
+  Python: '#3776AB',
+  Rust: '#CE422B',
+  Go: '#00ADD8',
+  CSS: '#663399',
+  HTML: '#E34F26',
+  default: '#555555',
+}
+
+function LangDot({ lang }) {
+  const color = LANG_COLORS[lang] ?? LANG_COLORS.default
+  return (
+    <span
+      className="w-2 h-2 rounded-full shrink-0 mt-1"
+      style={{ backgroundColor: color }}
+      aria-hidden="true"
+    />
+  )
+}
+
 export default function ProjectCard({ repo, index }) {
-  const { ref, isVisible } = useScrollReveal()
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.08 })
 
   return (
     <motion.article
       ref={ref}
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 50 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.07, ease: [0.25, 0.1, 0.25, 1] }}
-      className="group border border-neutral-900 card-hover p-8 flex flex-col gap-6 relative overflow-hidden"
+      transition={{ duration: 0.9, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+      className="group grid md:grid-cols-[1fr_1fr] gap-0 py-12 md:py-16 border-b border-white/[0.06] last:border-0"
     >
-      <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-[0.02] transition-opacity duration-300 pointer-events-none" />
+      {/* ── LEFT: visual identity ── */}
+      <div className="pr-0 md:pr-20 mb-8 md:mb-0 flex flex-col justify-between gap-8">
 
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <p className="text-xs text-neutral-600 uppercase tracking-widest mb-2">
-            {repo.language || 'Code'}
-          </p>
-          <h3 className="text-xl font-bold text-white group-hover:text-white transition-colors">
-            {repo.name}
-          </h3>
+        {/* Meta */}
+        <div className="flex items-center gap-5">
+          {repo.language && (
+            <span className="flex items-center gap-2">
+              <LangDot lang={repo.language} />
+              <span className="label-sm">{repo.language}</span>
+            </span>
+          )}
+          {repo.stargazers_count > 0 && (
+            <span className="label-sm flex items-center gap-1.5 ml-auto">
+              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z" />
+              </svg>
+              {repo.stargazers_count}
+            </span>
+          )}
         </div>
-        <div className="flex items-center gap-1 text-neutral-600 text-sm shrink-0">
-          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-            <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z" />
-          </svg>
-          <span>{repo.stargazers_count}</span>
-        </div>
+
+        {/* Big repo name */}
+        <h3
+          className="text-neutral-700 group-hover:text-white transition-colors font-black tracking-tight break-words"
+          style={{ fontSize: 'clamp(32px, 4.5vw, 60px)', lineHeight: 0.95, letterSpacing: '-0.03em' }}
+        >
+          {repo.name}
+        </h3>
       </div>
 
-      <p className="text-neutral-500 text-sm leading-relaxed flex-1">
-        {repo.description}
-      </p>
+      {/* ── RIGHT: description + links ── */}
+      <div className="flex flex-col justify-between gap-8">
+        <p className="text-neutral-500 leading-relaxed text-base">
+          {repo.description}
+        </p>
 
-      <div className="flex items-center gap-4 pt-4 border-t border-neutral-900">
-        <a
-          href={repo.html_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs text-neutral-500 hover:text-white transition-colors uppercase tracking-wider font-medium flex items-center gap-1.5"
-          aria-label={`View ${repo.name} on GitHub`}
-        >
-          GitHub
-          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-        </a>
-        {repo.homepage && (
-          <a
-            href={repo.homepage}
+        <div className="flex items-center gap-8">
+          <motion.a
+            href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-neutral-500 hover:text-white transition-colors uppercase tracking-wider font-medium flex items-center gap-1.5"
-            aria-label={`View live demo of ${repo.name}`}
+            className="text-sm font-semibold text-white border-b border-neutral-700 pb-0.5 hover:border-white transition-colors duration-200"
+            aria-label={`View ${repo.name} on GitHub`}
+            whileHover={{ x: 3 }}
+            transition={{ duration: 0.2 }}
           >
-            Live Demo
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-        )}
+            GitHub ↗
+          </motion.a>
+          {repo.homepage && (
+            <motion.a
+              href={repo.homepage}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-semibold text-neutral-500 border-b border-neutral-800 pb-0.5 hover:text-white hover:border-neutral-500 transition-colors duration-200"
+              aria-label={`Live demo of ${repo.name}`}
+              whileHover={{ x: 3 }}
+              transition={{ duration: 0.2 }}
+            >
+              Live ↗
+            </motion.a>
+          )}
+        </div>
       </div>
     </motion.article>
   )

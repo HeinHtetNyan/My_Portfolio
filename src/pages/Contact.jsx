@@ -6,75 +6,98 @@ import useScrollReveal from '../hooks/useScrollReveal'
 import { site, socialLinks } from '../config'
 
 export default function Contact() {
-  const { ref, isVisible } = useScrollReveal()
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.08 })
 
   return (
     <>
       <Helmet>
         <title>{`Contact — ${site.name}`}</title>
-        <meta name="description" content="Get in touch. I'm open to freelance projects and full-time opportunities." />
+        <meta name="description" content="Get in touch. Open to freelance and full-time opportunities." />
         <meta property="og:title" content={`Contact — ${site.name}`} />
       </Helmet>
 
-      <section className="section-padding pt-32 pb-8 border-b border-neutral-900">
+      {/* ── Page header ── */}
+      <section className="section-padding pt-36 pb-20">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-xs text-neutral-600 uppercase tracking-widest mb-6">Contact</p>
-          <h1 className="heading-xl text-white mb-6">Say hello.</h1>
-          <p className="text-neutral-500 max-w-lg leading-relaxed">
-            I'm open to select freelance projects and full-time opportunities. If you have something in mind, let's talk.
-          </p>
+          <p className="label-sm mb-10">Get in touch</p>
+          <h1 className="heading-hero text-white">
+            Say hello
+            <span className="text-neutral-800">.</span>
+          </h1>
         </motion.div>
       </section>
 
-      <section className="section-padding py-16">
-        <div className="grid md:grid-cols-2 gap-0 border border-neutral-900">
-          <div className="p-10 md:p-16 border-b md:border-b-0 md:border-r border-neutral-900">
-            <h2 className="text-xl font-bold mb-8">Send a message</h2>
-            <ContactForm />
-          </div>
+      {/* ── Two-column body ── */}
+      <section className="section-padding pb-20 divider border-t">
+        <div className="grid md:grid-cols-2 gap-16 md:gap-24 pt-16 md:pt-20">
 
+          {/* LEFT — form */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p className="label-sm mb-12">Send a message</p>
+            <ContactForm />
+          </motion.div>
+
+          {/* RIGHT — social */}
           <motion.div
             ref={ref}
-            initial={{ opacity: 0, x: 16 }}
-            animate={isVisible ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-            className="p-10 md:p-16"
+            initial={{ opacity: 0, y: 40 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="text-xl font-bold mb-8">Find me online</h2>
-            <ul className="flex flex-col gap-0 border border-neutral-900">
+            <p className="label-sm mb-12">Find me online</p>
+
+            <ul className="flex flex-col">
               {socialLinks.map((link, i) => (
                 <li
                   key={link.label}
-                  className={i < socialLinks.length - 1 ? 'border-b border-neutral-900' : ''}
+                  className={i < socialLinks.length - 1 ? 'border-b border-white/[0.06]' : ''}
                 >
-                  <a
+                  <motion.a
                     href={link.href}
                     target={link.href.startsWith('mailto') ? undefined : '_blank'}
                     rel={link.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                    className="flex items-center justify-between p-5 group hover:bg-white/[0.03] transition-colors"
+                    className="group flex items-center justify-between py-6"
                     aria-label={`${link.label}: ${link.handle}`}
+                    whileHover={{ x: 6 }}
+                    transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <div>
-                      <p className="text-xs text-neutral-600 uppercase tracking-widest mb-1">{link.label}</p>
-                      <p className="text-white text-sm font-medium">{link.handle}</p>
+                      <p className="label-sm mb-1.5">{link.label}</p>
+                      <p className="text-neutral-500 group-hover:text-white transition-colors duration-300 text-base font-medium">
+                        {link.handle}
+                      </p>
                     </div>
-                    <span className="text-neutral-700 group-hover:text-white transition-colors group-hover:translate-x-1 inline-block transition-transform duration-200">
-                      →
+                    <span className="text-neutral-800 group-hover:text-white transition-colors duration-300 text-xl">
+                      ↗
                     </span>
-                  </a>
+                  </motion.a>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-12 p-6 border border-neutral-900 bg-neutral-950">
-              <p className="text-xs text-neutral-600 uppercase tracking-widest mb-2">Response time</p>
-              <p className="text-white font-semibold">Usually within 24 hours</p>
+            {/* Response time note */}
+            <div className="mt-14 pt-10 border-t border-white/[0.06]">
+              <p className="label-sm mb-3">Response time</p>
+              <p className="text-white font-semibold text-xl">Within 24 hours.</p>
+              {site.contact.email && (
+                <a
+                  href={`mailto:${site.contact.email}`}
+                  className="text-neutral-600 text-sm hover:text-white transition-colors mt-2 inline-block"
+                >
+                  {site.contact.email}
+                </a>
+              )}
             </div>
           </motion.div>
+
         </div>
       </section>
 
