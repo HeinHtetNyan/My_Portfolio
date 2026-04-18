@@ -29,16 +29,16 @@ export default function ContactForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const errs = validate(form)
-    if (Object.keys(errs).length) { setErrors(errs); return }
+    const validationErrors = validate(form)
+    if (Object.keys(validationErrors).length) { setErrors(validationErrors); return }
     setStatus('loading')
     try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(form),
       })
-      if (res.ok) { setStatus('success'); setForm({ name: '', email: '', message: '' }) }
+      if (response.ok) { setStatus('success'); setForm({ name: '', email: '', message: '' }) }
       else setStatus('error')
     } catch { setStatus('error') }
   }

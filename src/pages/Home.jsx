@@ -128,7 +128,7 @@ export default function Home() {
     if (!site.github.username) { setLoading(false); return }
     fetchRepos(site.github.username)
       .then((data) => {
-        const starred = data.filter((r) => r.stargazers_count > 0)
+        const starred = data.filter((repo) => repo.stargazers_count > 0)
         setRepos(starred.length > 0 ? starred : data)
       })
       .catch(() => setRepos([]))

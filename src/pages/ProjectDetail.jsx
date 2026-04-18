@@ -7,7 +7,7 @@ import { site } from '../config'
 
 export default function ProjectDetail() {
   const { slug } = useParams()
-  const project = featuredProjects.find((p) => p.slug === slug)
+  const project = featuredProjects.find((proj) => proj.slug === slug)
 
   if (!project) return <Navigate to="/projects" replace />
 
@@ -126,14 +126,14 @@ export default function ProjectDetail() {
           >
             <p className="label-sm mb-8">Tech stack</p>
             <ul className="flex flex-col gap-0">
-              {project.tech.map((t, i) => (
+              {project.tech.map((techItem, techIndex) => (
                 <li
-                  key={t}
+                  key={techItem}
                   className={`py-4 text-white font-semibold text-base ${
-                    i < project.tech.length - 1 ? 'border-b border-white/[0.06]' : ''
+                    techIndex < project.tech.length - 1 ? 'border-b border-white/[0.06]' : ''
                   }`}
                 >
-                  {t}
+                  {techItem}
                 </li>
               ))}
             </ul>

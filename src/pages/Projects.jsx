@@ -9,11 +9,11 @@ import { site } from '../config'
 const USERNAME = site.github.username
 
 /* ─── Skeleton row matching ProjectCard layout ─── */
-function SkeletonRow({ i }) {
+function SkeletonRow({ index }) {
   return (
     <motion.div
       animate={{ opacity: [0.25, 0.5, 0.25] }}
-      transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: i * 0.15 }}
+      transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: index * 0.15 }}
       className="grid md:grid-cols-[1fr_1fr] gap-0 py-12 md:py-16 border-b border-white/[0.06]"
     >
       <div className="pr-0 md:pr-20 flex flex-col justify-between gap-10">
@@ -89,8 +89,8 @@ export default function Projects() {
 
           {status === 'loading' && (
             <div>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <SkeletonRow key={i} i={i} />
+              {Array.from({ length: 6 }).map((_, index) => (
+                <SkeletonRow key={index} index={index} />
               ))}
             </div>
           )}

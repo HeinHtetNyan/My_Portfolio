@@ -20,28 +20,28 @@ export default function GridBackground() {
     }
 
     const buildDots = () => {
-      const cols = Math.ceil(canvas.width / SPACING) + 1
-      const rows = Math.ceil(canvas.height / SPACING) + 1
+      const numColumns = Math.ceil(canvas.width / SPACING) + 1
+      const numRows = Math.ceil(canvas.height / SPACING) + 1
       dotsRef.current = []
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          dotsRef.current.push({ x: c * SPACING, y: r * SPACING })
+      for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+        for (let colIndex = 0; colIndex < numColumns; colIndex++) {
+          dotsRef.current.push({ x: colIndex * SPACING, y: rowIndex * SPACING })
         }
       }
     }
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      const { x: mx, y: my } = mouseRef.current
-      const R = 140
+      const { x: mouseX, y: mouseY } = mouseRef.current
+      const PROXIMITY_RADIUS = 140
 
       for (const { x, y } of dotsRef.current) {
-        const dx = mx - x
-        const dy = my - y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        const prox = Math.max(0, 1 - dist / R)
-        const alpha = 0.08 + prox * 0.35
-        const size = 0.8 + prox * 1.6
+        const deltaX = mouseX - x
+        const deltaY = mouseY - y
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+        const proximity = Math.max(0, 1 - distance / PROXIMITY_RADIUS)
+        const alpha = 0.08 + proximity * 0.35
+        const size = 0.8 + proximity * 1.6
 
         ctx.beginPath()
         ctx.arc(x, y, size, 0, Math.PI * 2)
