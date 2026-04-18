@@ -1,7 +1,12 @@
-import { Suspense, lazy, useEffect } from 'react'
+import { Suspense, lazy, useLayoutEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import PageLoader from './components/ui/PageLoader'
+
+/* Disable browser scroll restoration immediately at module load — before any route renders */
+if ('scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual'
+}
 
 const Home = lazy(() => import('./pages/Home'))
 const Projects = lazy(() => import('./pages/Projects'))
@@ -12,9 +17,8 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
-  useEffect(() => {
-    document.documentElement.scrollTop = 0
-    document.body.scrollTop = 0
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [pathname])
   return null
 }
@@ -22,8 +26,8 @@ function ScrollToTop() {
 export default function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
       <Layout>
+        <ScrollToTop />
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
