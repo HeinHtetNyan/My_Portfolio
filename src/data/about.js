@@ -28,9 +28,9 @@ export const experience = [
   {
     id: 3,
     period: '2023 — 2026',
-    company: 'Independent Projects',
+    company: 'Studying and freelance Projects',
     role: 'Backend Developer',
-    description: 'Built backend systems and APIs using Python, FastAPI, and PostgreSQL. Focused on clean architecture and scalable system design through personal and academic projects.',
+    description: 'Built backend systems and APIs using Python, FastAPI, and PostgreSQL. Focused on clean architecture and scalable system design through freelance and academic projects.',
   },
   {
     id: 4,
