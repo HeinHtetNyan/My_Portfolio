@@ -14,19 +14,19 @@ function SkeletonRow({ index }) {
     <motion.div
       animate={{ opacity: [0.25, 0.5, 0.25] }}
       transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: index * 0.15 }}
-      className="grid md:grid-cols-[1fr_1fr] gap-0 py-12 md:py-16 border-b border-white/[0.06]"
+      className="grid md:grid-cols-[1fr_1fr] gap-0 py-12 md:py-16 border-b border-black/[0.08] dark:border-white/[0.06]"
     >
       <div className="pr-0 md:pr-20 flex flex-col justify-between gap-10">
-        <div className="h-2 bg-neutral-900 rounded w-28" />
-        <div className="h-12 bg-neutral-900 rounded w-3/4" />
+        <div className="h-2 bg-neutral-200 dark:bg-neutral-900 rounded w-28" />
+        <div className="h-12 bg-neutral-200 dark:bg-neutral-900 rounded w-3/4" />
       </div>
       <div className="flex flex-col justify-between gap-6">
         <div className="flex flex-col gap-3">
-          <div className="h-2 bg-neutral-900 rounded w-full" />
-          <div className="h-2 bg-neutral-900 rounded w-5/6" />
-          <div className="h-2 bg-neutral-900 rounded w-3/4" />
+          <div className="h-2 bg-neutral-200 dark:bg-neutral-900 rounded w-full" />
+          <div className="h-2 bg-neutral-200 dark:bg-neutral-900 rounded w-5/6" />
+          <div className="h-2 bg-neutral-200 dark:bg-neutral-900 rounded w-3/4" />
         </div>
-        <div className="h-2 bg-neutral-900 rounded w-20" />
+        <div className="h-2 bg-neutral-200 dark:bg-neutral-900 rounded w-20" />
       </div>
     </motion.div>
   )
@@ -36,8 +36,8 @@ function SkeletonRow({ index }) {
 function StateMessage({ heading, body }) {
   return (
     <div className="py-40 flex flex-col items-center text-center gap-4">
-      <p className="text-neutral-400 text-2xl font-semibold">{heading}</p>
-      {body && <p className="text-neutral-700 text-sm max-w-sm leading-relaxed">{body}</p>}
+      <p className="text-neutral-600 dark:text-neutral-400 text-2xl font-semibold">{heading}</p>
+      {body && <p className="text-neutral-400 dark:text-neutral-700 text-sm max-w-sm leading-relaxed">{body}</p>}
     </div>
   )
 }
@@ -76,16 +76,16 @@ export default function Projects() {
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
           <p className="label-sm mb-10">Open source — GitHub</p>
-          <h1 className="heading-hero text-white">
+          <h1 className="heading-hero text-neutral-900 dark:text-white">
             Projects
-            <span className="text-neutral-800">.</span>
+            <span className="text-neutral-300 dark:text-neutral-800">.</span>
           </h1>
         </motion.div>
       </section>
 
       {/* ── Project list ── */}
       <section className="section-padding pb-20">
-        <div className="border-t border-white/[0.06]">
+        <div className="border-t border-black/[0.08] dark:border-white/[0.06]">
 
           {status === 'loading' && (
             <div>

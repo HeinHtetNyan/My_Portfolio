@@ -46,7 +46,7 @@ export default function Contact() {
       ══════════════════════════════════════════ */}
       <section className="section-padding pt-32 pb-20">
         <motion.h1
-          className="text-white font-black leading-none tracking-tight mb-16"
+          className="text-neutral-900 dark:text-white font-black leading-none tracking-tight mb-16"
           style={{ fontSize: 'clamp(52px, 9vw, 120px)', letterSpacing: '-0.03em' }}
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,14 +56,14 @@ export default function Contact() {
         </motion.h1>
 
         <motion.p
-          className="text-white font-black leading-[1.05] tracking-tight max-w-4xl"
+          className="text-neutral-900 dark:text-white font-black leading-[1.05] tracking-tight max-w-4xl"
           style={{ fontSize: 'clamp(28px, 4.5vw, 64px)', letterSpacing: '-0.02em' }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
           Have a project in mind or need a backend system?
-          <span className="text-neutral-600"> Let's discuss your project.</span>
+          <span className="text-neutral-400 dark:text-neutral-600"> Let's discuss your project.</span>
         </motion.p>
       </section>
 
@@ -99,7 +99,7 @@ export default function Contact() {
                 aria-label={`${link.label}: ${link.handle}`}
               >
                 {/* Icon box */}
-                <div className="w-12 h-12 shrink-0 border border-white/20 flex items-center justify-center text-white group-hover:border-white/50 transition-colors duration-200">
+                <div className="w-12 h-12 shrink-0 border border-black/20 dark:border-white/20 flex items-center justify-center text-neutral-900 dark:text-white group-hover:border-black/50 dark:group-hover:border-white/50 transition-colors duration-200">
                   {SOCIAL_ICONS[link.label] ?? (
                     <span className="text-sm font-bold">{link.label.slice(0, 2)}</span>
                   )}
@@ -107,8 +107,8 @@ export default function Contact() {
 
                 {/* Label + handle */}
                 <div>
-                  <p className="text-white text-sm font-semibold lowercase">{link.label}</p>
-                  <p className="text-neutral-600 text-xs mt-0.5" style={{ fontFamily: 'monospace' }}>
+                  <p className="text-neutral-900 dark:text-white text-base font-semibold lowercase">{link.label}</p>
+                  <p className="text-neutral-500 dark:text-neutral-400 text-sm mt-0.5" style={{ fontFamily: 'monospace' }}>
                     {link.handle}
                   </p>
                 </div>

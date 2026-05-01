@@ -14,7 +14,7 @@ function validate(data) {
   return errors
 }
 
-const inputClass = 'w-full bg-neutral-900 text-white text-base placeholder-neutral-600 outline-none px-5 py-4 resize-none transition-colors duration-200 focus:bg-neutral-800'
+const inputClass = 'w-full bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white text-base placeholder-neutral-400 dark:placeholder-neutral-600 outline-none px-5 py-4 resize-none transition-colors duration-200 focus:bg-neutral-200 dark:focus:bg-neutral-800'
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
@@ -53,11 +53,11 @@ export default function ContactForm() {
           exit={{ opacity: 0 }}
           className="py-20 flex flex-col gap-4"
         >
-          <p className="text-white font-semibold text-2xl">Message sent.</p>
+          <p className="text-neutral-900 dark:text-white font-semibold text-2xl">Message sent.</p>
           <p className="text-neutral-500 text-sm">I'll get back to you within 24 hours.</p>
           <button
             onClick={() => setStatus('idle')}
-            className="mt-6 label-sm text-neutral-700 hover:text-white transition-colors self-start"
+            className="mt-6 label-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors self-start"
           >
             Send another →
           </button>
@@ -85,7 +85,7 @@ export default function ContactForm() {
               aria-describedby={errors.name ? 'name-error' : undefined}
               className={inputClass}
             />
-            {errors.name && <p id="name-error" role="alert" className="text-xs text-red-400 px-5 py-2 bg-neutral-900">{errors.name}</p>}
+            {errors.name && <p id="name-error" role="alert" className="text-xs text-red-500 dark:text-red-400 px-5 py-2 bg-neutral-100 dark:bg-neutral-900">{errors.name}</p>}
           </div>
 
           {/* Email */}
@@ -102,7 +102,7 @@ export default function ContactForm() {
               aria-describedby={errors.email ? 'email-error' : undefined}
               className={inputClass}
             />
-            {errors.email && <p id="email-error" role="alert" className="text-xs text-red-400 px-5 py-2 bg-neutral-900">{errors.email}</p>}
+            {errors.email && <p id="email-error" role="alert" className="text-xs text-red-500 dark:text-red-400 px-5 py-2 bg-neutral-100 dark:bg-neutral-900">{errors.email}</p>}
           </div>
 
           {/* Message */}
@@ -117,11 +117,11 @@ export default function ContactForm() {
               aria-describedby={errors.message ? 'message-error' : undefined}
               className={`${inputClass} min-h-[220px]`}
             />
-            {errors.message && <p id="message-error" role="alert" className="text-xs text-red-400 px-5 py-2 bg-neutral-900">{errors.message}</p>}
+            {errors.message && <p id="message-error" role="alert" className="text-xs text-red-500 dark:text-red-400 px-5 py-2 bg-neutral-100 dark:bg-neutral-900">{errors.message}</p>}
           </div>
 
           {status === 'error' && (
-            <p className="text-xs text-red-400 px-5 py-3 bg-neutral-900" role="alert">
+            <p className="text-xs text-red-500 dark:text-red-400 px-5 py-3 bg-neutral-100 dark:bg-neutral-900" role="alert">
               Something went wrong. Try again or email directly.
             </p>
           )}
@@ -131,7 +131,7 @@ export default function ContactForm() {
             type="submit"
             disabled={status === 'loading'}
             whileTap={{ scale: 0.99 }}
-            className="w-full bg-white text-black text-sm font-semibold py-5 hover:bg-neutral-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-neutral-900 dark:bg-white text-white dark:text-black text-sm font-semibold py-5 hover:bg-neutral-700 dark:hover:bg-neutral-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {status === 'loading' ? 'Sending...' : 'Submit'}
           </motion.button>

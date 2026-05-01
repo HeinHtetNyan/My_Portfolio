@@ -14,22 +14,36 @@
   }
 
   body {
-    background-color: #000000;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #0a0a0a;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
+  .dark body {
+    background-color: #000000;
+    color: #ffffff;
+  }
+
   ::selection {
+    background-color: #0a0a0a;
+    color: #ffffff;
+  }
+
+  .dark ::selection {
     background-color: #ffffff;
     color: #000000;
   }
 
   :focus-visible {
-    outline: 1px solid rgba(255, 255, 255, 0.35);
+    outline: 1px solid rgba(0, 0, 0, 0.35);
     outline-offset: 3px;
+  }
+
+  .dark :focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.35);
   }
 
   a {
@@ -39,8 +53,27 @@
 }
 
 @layer components {
-  /* Subtle dot-grid background */
+  /* Subtle dot-grid background — light mode */
   .grid-bg {
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent calc(80px - 1px),
+        rgba(0, 0, 0, 0.04) calc(80px - 1px),
+        rgba(0, 0, 0, 0.04) 80px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent calc(80px - 1px),
+        rgba(0, 0, 0, 0.04) calc(80px - 1px),
+        rgba(0, 0, 0, 0.04) 80px
+      );
+  }
+
+  /* dot-grid background — dark mode */
+  .dark .grid-bg {
     background-image:
       repeating-linear-gradient(
         0deg,
@@ -64,7 +97,6 @@
 
   /*
    * Hero — 70px mobile → 100px tablet → 120px+ desktop
-   * Matches spec: text-[70px] md:text-[100px] lg:text-[120px] leading-[0.9]
    */
   .heading-hero {
     font-size: 70px;
@@ -107,11 +139,16 @@
 
   /* Micro label */
   .label-sm {
-    @apply text-[11px] font-medium uppercase tracking-[0.16em] text-neutral-600;
+    @apply text-[13px] font-medium uppercase tracking-[0.14em] text-neutral-500;
   }
 
-  /* Thin divider */
+  /* Thin divider — light mode */
   .divider {
-    @apply border-t border-white/[0.06];
+    @apply border-t border-black/[0.08];
+  }
+
+  /* Thin divider — dark mode */
+  .dark .divider {
+    border-color: rgba(255, 255, 255, 0.06);
   }
 }

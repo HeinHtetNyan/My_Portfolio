@@ -14,11 +14,11 @@ export default function Footer() {
         <div>
           <Link
             to="/"
-            className="text-white font-black text-xl tracking-tight hover:opacity-50 transition-opacity"
+            className="text-neutral-900 dark:text-white font-black text-xl tracking-tight hover:opacity-50 transition-opacity"
           >
             {site.name}
           </Link>
-          <p className="text-neutral-700 text-sm mt-3 max-w-[220px] leading-relaxed">
+          <p className="text-neutral-500 text-sm mt-3 max-w-[220px] leading-relaxed">
             Designing and building reliable backend systems.
           </p>
         </div>
@@ -31,7 +31,7 @@ export default function Footer() {
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-sm text-neutral-600 hover:text-white transition-colors"
+                    className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -50,7 +50,7 @@ export default function Footer() {
                       href={link.href}
                       target={link.href.startsWith('mailto') ? undefined : '_blank'}
                       rel={link.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                      className="text-sm text-neutral-600 hover:text-white transition-colors"
+                      className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"
                     >
                       {link.label}
                     </a>
@@ -62,11 +62,11 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 pt-8 border-t border-white/[0.04]">
-        <p className="label-sm text-neutral-800">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 pt-8 border-t border-black/[0.06] dark:border-white/[0.04]">
+        <p className="label-sm text-neutral-400 dark:text-neutral-800">
           © {new Date().getFullYear()} {site.name}
         </p>
-        <p className="label-sm text-neutral-800">
+        <p className="label-sm text-neutral-400 dark:text-neutral-800">
           React + Tailwind CSS
         </p>
       </div>

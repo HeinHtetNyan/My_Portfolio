@@ -43,7 +43,7 @@ export default function About() {
           about
         </motion.p>
         <motion.h1
-          className="text-white font-black leading-[1] tracking-tight"
+          className="text-neutral-900 dark:text-white font-black leading-[1] tracking-tight"
           style={{ fontSize: 'clamp(42px, 7vw, 100px)', letterSpacing: '-0.03em' }}
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -59,11 +59,11 @@ export default function About() {
       <section className="section-padding pb-0 divider border-t">
 
         {/* Stats row */}
-        <div className="grid grid-cols-3 border-b border-white/[0.06] py-8">
+        <div className="grid grid-cols-3 border-b border-black/[0.08] dark:border-white/[0.06] py-8">
           {stats.map((stat) => (
             <div key={stat.label}>
               <p className="label-sm mb-3">{stat.label}</p>
-              <p className="text-white font-semibold text-lg md:text-xl">{stat.value}</p>
+              <p className="text-neutral-900 dark:text-white font-semibold text-lg md:text-xl">{stat.value}</p>
             </div>
           ))}
         </div>
@@ -72,8 +72,8 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-0 items-stretch">
 
           {/* Photo */}
-          <Reveal className="border-r border-white/[0.06] py-16 pr-0 md:pr-16">
-            <div className="relative w-full overflow-hidden bg-neutral-950" style={{ aspectRatio: '3 / 4' }}>
+          <Reveal className="border-r border-black/[0.08] dark:border-white/[0.06] py-16 pr-0 md:pr-16">
+            <div className="relative w-full overflow-hidden bg-neutral-100 dark:bg-neutral-950" style={{ aspectRatio: '3 / 4' }}>
               <img
                 src="/IMG_7558.JPG"
                 alt={site.owner.name}
@@ -81,7 +81,7 @@ export default function About() {
               />
               <div className="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/90 via-black/30 to-transparent">
                 <p className="text-white font-semibold">{site.owner.name}</p>
-                <p className="text-neutral-500 text-sm mt-1">{site.owner.title}</p>
+                <p className="text-neutral-400 text-sm mt-1">{site.owner.title}</p>
               </div>
             </div>
           </Reveal>
@@ -92,7 +92,7 @@ export default function About() {
               {bio.map((paragraph, paragraphIndex) => (
                 <p
                   key={paragraphIndex}
-                  className="text-neutral-400 font-light leading-relaxed"
+                  className="text-neutral-600 dark:text-neutral-400 font-light leading-relaxed"
                   style={{ fontSize: 'clamp(16px, 1.6vw, 20px)' }}
                 >
                   {paragraph}
@@ -109,7 +109,7 @@ export default function About() {
       ══════════════════════════════════════════ */}
       <section className="section-padding py-0 divider border-t">
 
-        <div className="py-8 border-b border-white/[0.06]">
+        <div className="py-8 border-b border-black/[0.08] dark:border-white/[0.06]">
           <p className="label-sm" style={{ fontFamily: 'monospace' }}>.work experience</p>
         </div>
 
@@ -118,11 +118,11 @@ export default function About() {
             <Reveal
               key={job.id}
               delay={i * 0.07}
-              className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr_1.4fr] gap-6 md:gap-10 py-14 md:py-20 border-b border-white/[0.06] last:border-0 items-start"
+              className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr_1.4fr] gap-6 md:gap-10 py-14 md:py-20 border-b border-black/[0.08] dark:border-white/[0.06] last:border-0 items-start"
             >
               {/* Period */}
               <p
-                className="text-white font-black tracking-tight"
+                className="text-neutral-900 dark:text-white font-black tracking-tight"
                 style={{ fontSize: 'clamp(22px, 2.5vw, 36px)', letterSpacing: '-0.02em' }}
               >
                 {job.period}
@@ -131,16 +131,16 @@ export default function About() {
               {/* Company + Role */}
               <div>
                 <p
-                  className="text-white font-black tracking-tight leading-tight"
+                  className="text-neutral-900 dark:text-white font-black tracking-tight leading-tight"
                   style={{ fontSize: 'clamp(22px, 2.5vw, 36px)', letterSpacing: '-0.02em' }}
                 >
                   {job.company}
                 </p>
-                <p className="text-neutral-600 text-sm mt-2">{job.role}</p>
+                <p className="text-neutral-500 dark:text-neutral-600 text-sm mt-2">{job.role}</p>
               </div>
 
               {/* Description */}
-              <p className="text-neutral-500 text-sm leading-relaxed md:pt-1">
+              <p className="text-neutral-600 dark:text-neutral-500 text-sm leading-relaxed md:pt-1">
                 {job.description}
               </p>
             </Reveal>
@@ -153,7 +153,7 @@ export default function About() {
       ══════════════════════════════════════════ */}
       <section className="section-padding py-0 divider border-t">
 
-        <div className="py-8 border-b border-white/[0.06]">
+        <div className="py-8 border-b border-black/[0.08] dark:border-white/[0.06]">
           <p className="label-sm" style={{ fontFamily: 'monospace' }}>.stack</p>
         </div>
 
@@ -166,9 +166,9 @@ export default function About() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: i * 0.04 }}
-                className="border-b border-r border-white/[0.06] p-8 flex flex-col gap-4"
+                className="border-b border-r border-black/[0.08] dark:border-white/[0.06] p-8 flex flex-col gap-4"
               >
-                <div className="w-12 h-12 rounded bg-neutral-950 flex items-center justify-center p-2.5">
+                <div className="w-12 h-12 rounded bg-neutral-900 flex items-center justify-center p-2.5">
                   <img
                     src={tool.icon}
                     alt={tool.name}
@@ -178,7 +178,7 @@ export default function About() {
                   />
                 </div>
                 <div>
-                  <p className="text-white font-semibold text-base">{tool.name}</p>
+                  <p className="text-neutral-900 dark:text-white font-semibold text-base">{tool.name}</p>
                   <p className="label-sm mt-1" style={{ fontFamily: 'monospace' }}>{tool.category}</p>
                 </div>
               </motion.div>
@@ -193,7 +193,7 @@ export default function About() {
       <section className="section-padding py-28 md:py-40 divider border-t">
         <Reveal>
           <h2
-            className="text-white font-black leading-[1.05] tracking-tight mb-16 max-w-4xl"
+            className="text-neutral-900 dark:text-white font-black leading-[1.05] tracking-tight mb-16 max-w-4xl"
             style={{ fontSize: 'clamp(36px, 6vw, 86px)', letterSpacing: '-0.03em' }}
           >
             Available for backend projects. Let's discuss your idea.
@@ -201,7 +201,7 @@ export default function About() {
 
           <Link
             to="/contact"
-            className="inline-flex items-center gap-3 border border-white/20 px-8 py-4 text-sm font-semibold text-white hover:bg-white hover:text-black transition-all duration-300"
+            className="inline-flex items-center gap-3 border border-black/20 dark:border-white/20 px-8 py-4 text-sm font-semibold text-neutral-900 dark:text-white hover:bg-neutral-900 dark:hover:bg-white hover:text-white dark:hover:text-black transition-all duration-300"
           >
             contact me ↗
           </Link>

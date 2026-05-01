@@ -34,18 +34,20 @@ export default function GridBackground() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       const { x: mouseX, y: mouseY } = mouseRef.current
       const PROXIMITY_RADIUS = 140
+      const isDark = document.documentElement.classList.contains('dark')
+      const dotRgb = isDark ? '255,255,255' : '0,0,0'
 
       for (const { x, y } of dotsRef.current) {
         const deltaX = mouseX - x
         const deltaY = mouseY - y
         const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
         const proximity = Math.max(0, 1 - distance / PROXIMITY_RADIUS)
-        const alpha = 0.08 + proximity * 0.35
+        const alpha = (isDark ? 0.08 : 0.12) + proximity * 0.35
         const size = 0.8 + proximity * 1.6
 
         ctx.beginPath()
         ctx.arc(x, y, size, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(255,255,255,${alpha})`
+        ctx.fillStyle = `rgba(${dotRgb},${alpha})`
         ctx.fill()
       }
     }

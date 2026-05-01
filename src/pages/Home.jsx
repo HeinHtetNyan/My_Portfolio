@@ -6,15 +6,26 @@ import Footer from '../components/layout/Footer'
 import useScrollReveal from '../hooks/useScrollReveal'
 import { fetchRepos } from '../services/github'
 import { site } from '../config'
+import { useTheme } from '../context/ThemeContext'
 
-/* ─── Language → card theme ─── */
-const LANG_THEME = {
+/* ─── Language → card theme (dark) ─── */
+const LANG_THEME_DARK = {
   TypeScript:  { accent: '#080d1a', titleColor: '#60a5fa', barBg: '#0b1120' },
   JavaScript:  { accent: '#1a1600', titleColor: '#fbbf24', barBg: '#221c00' },
   Python:      { accent: '#0a1020', titleColor: '#818cf8', barBg: '#0d1428' },
   Go:          { accent: '#001a14', titleColor: '#34d399', barBg: '#00221a' },
   Rust:        { accent: '#1a0800', titleColor: '#fb923c', barBg: '#220e00' },
   default:     { accent: '#111111', titleColor: '#ffffff', barBg: '#1a1a1a' },
+}
+
+/* ─── Language → card theme (light) ─── */
+const LANG_THEME_LIGHT = {
+  TypeScript:  { accent: '#dbeafe', titleColor: '#1d4ed8', barBg: '#bfdbfe' },
+  JavaScript:  { accent: '#fef9c3', titleColor: '#a16207', barBg: '#fef08a' },
+  Python:      { accent: '#ede9fe', titleColor: '#5b21b6', barBg: '#ddd6fe' },
+  Go:          { accent: '#d1fae5', titleColor: '#065f46', barBg: '#a7f3d0' },
+  Rust:        { accent: '#ffedd5', titleColor: '#c2410c', barBg: '#fed7aa' },
+  default:     { accent: '#f5f5f5', titleColor: '#171717', barBg: '#e5e5e5' },
 }
 
 /* ─── Scroll-reveal wrapper ─── */
@@ -35,13 +46,15 @@ function Reveal({ children, className = '', delay = 0, y = 50 }) {
 
 /* ─── Sticky layered project card ─── */
 function ProjectCard({ repo, index }) {
+  const { isDark } = useTheme()
+  const LANG_THEME = isDark ? LANG_THEME_DARK : LANG_THEME_LIGHT
   const theme = LANG_THEME[repo.language] ?? LANG_THEME.default
   const year = new Date(repo.pushed_at || repo.updated_at).getFullYear()
   const fallbackImg = `https://opengraph.githubassets.com/1/${site.github.username}/${repo.name}`
   const image = repo.openGraphImageUrl ?? fallbackImg
 
   return (
-    <div style={{ position: 'sticky', top: '56px', zIndex: index + 1 }}>
+    <div style={{ position: 'sticky', top: '64px', zIndex: index + 1 }}>
       <a
         href={repo.html_url}
         target="_blank"
@@ -105,17 +118,17 @@ function ProjectCard({ repo, index }) {
 /* ─── Skeleton card ─── */
 function SkeletonCard({ index }) {
   return (
-    <div style={{ position: 'sticky', top: '56px', zIndex: index + 1 }}>
+    <div style={{ position: 'sticky', top: '64px', zIndex: index + 1 }}>
       <motion.div
         animate={{ opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: index * 0.2 }}
-        className="bg-neutral-950"
+        className="bg-neutral-50 dark:bg-neutral-950"
       >
-        <div className="h-10 bg-neutral-900" />
-        <div className="h-36 bg-neutral-950 px-6 md:px-12 lg:px-24 flex items-end pb-8">
-          <div className="h-16 w-2/3 bg-neutral-900 rounded" />
+        <div className="h-10 bg-neutral-200 dark:bg-neutral-900" />
+        <div className="h-36 bg-neutral-50 dark:bg-neutral-950 px-6 md:px-12 lg:px-24 flex items-end pb-8">
+          <div className="h-16 w-2/3 bg-neutral-200 dark:bg-neutral-900 rounded" />
         </div>
-        <div className="w-full bg-neutral-900" style={{ aspectRatio: '16 / 7' }} />
+        <div className="w-full bg-neutral-200 dark:bg-neutral-900" style={{ aspectRatio: '16 / 7' }} />
       </motion.div>
     </div>
   )
@@ -161,25 +174,27 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="absolute top-20 right-6 md:right-12 lg:right-24 flex items-center gap-2"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="label-sm">{site.owner.availability}</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-sm font-medium uppercase tracking-[0.12em] text-neutral-700 dark:text-neutral-300">
+              {site.owner.availability}
+            </span>
           </motion.div>
         )}
 
         <div className="overflow-hidden">
           <motion.h1
-            className="heading-hero text-white"
+            className="heading-hero text-neutral-900 dark:text-white"
             initial={{ y: '100%', opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
           >
             {site.owner.title.split(' ')[0]}
             <br />
-            <span className="text-neutral-800">
+            <span className="text-neutral-300 dark:text-neutral-800">
               {site.owner.title.split(' ').slice(1).join(' ')} &
             </span>
             <br />
-            System Builder<span className="text-neutral-800">.</span>
+            System Builder<span className="text-neutral-300 dark:text-neutral-800">.</span>
           </motion.h1>
         </div>
 
@@ -189,19 +204,19 @@ export default function Home() {
           transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-8 mt-12 md:mt-16"
         >
-          <p className="text-neutral-500 text-base leading-relaxed max-w-xs">
+          <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-lg leading-relaxed max-w-xs">
             {site.owner.bio}
           </p>
           <div className="flex items-center gap-8">
             <Link
               to="/projects"
-              className="text-sm font-semibold text-white border-b border-white pb-0.5 hover:border-neutral-600 hover:text-neutral-400 transition-all duration-200"
+              className="text-base font-semibold text-neutral-900 dark:text-white border-b border-neutral-900 dark:border-white pb-0.5 hover:border-neutral-400 hover:text-neutral-500 dark:hover:border-neutral-600 dark:hover:text-neutral-400 transition-all duration-200"
             >
               View work →
             </Link>
             <Link
               to="/contact"
-              className="text-sm text-neutral-600 hover:text-white transition-colors"
+              className="text-base text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"
             >
               Contact
             </Link>
@@ -209,7 +224,7 @@ export default function Home() {
         </motion.div>
 
         <motion.div
-          className="mt-16 h-px bg-white/[0.06]"
+          className="mt-16 h-px bg-black/[0.08] dark:bg-white/[0.06]"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           style={{ originX: 0 }}
@@ -226,7 +241,7 @@ export default function Home() {
           <p className="label-sm">Selected work</p>
           <Link
             to="/projects"
-            className="text-sm text-neutral-600 hover:text-white transition-colors"
+            className="text-base text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"
           >
             All projects →
           </Link>
@@ -240,7 +255,7 @@ export default function Home() {
                   <ProjectCard key={repo.id} repo={repo} index={i} />
                 ))
               : (
-                <div className="section-padding py-20 text-neutral-700 text-sm">
+                <div className="section-padding py-20 text-neutral-400 dark:text-neutral-700 text-sm">
                   No public repositories found.
                 </div>
               )
@@ -254,17 +269,17 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           ABOUT PREVIEW
       ══════════════════════════════════════════ */}
-      <section className="section-padding py-28 md:py-36 divider border-t relative z-10 bg-black">
+      <section className="section-padding py-28 md:py-36 divider border-t relative z-10 bg-white dark:bg-black">
         <div className="grid md:grid-cols-2 gap-16 md:gap-24 items-center">
 
           <Reveal>
             <p className="label-sm mb-8">About</p>
-            <p className="text-3xl md:text-4xl xl:text-5xl font-bold leading-[1.1] tracking-tight text-white mb-10">
+            <p className="text-3xl md:text-4xl xl:text-5xl font-bold leading-[1.1] tracking-tight text-neutral-900 dark:text-white mb-10">
               I design and build scalable backend systems that power real-world applications. Experienced in Python, FastAPI, PostgreSQL, and distributed system design.
             </p>
             <Link
               to="/about"
-              className="inline-flex items-center gap-3 text-sm text-neutral-500 hover:text-white transition-colors"
+              className="inline-flex items-center gap-3 text-base text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"
             >
               <span>More about me</span>
               <motion.span
@@ -278,7 +293,7 @@ export default function Home() {
           </Reveal>
 
           <Reveal delay={0.12}>
-            <div className="relative aspect-square overflow-hidden bg-neutral-950">
+            <div className="relative aspect-square overflow-hidden bg-neutral-100 dark:bg-neutral-950">
               <img
                 src="/IMG_4558.JPG"
                 alt={site.owner.name}
@@ -286,7 +301,7 @@ export default function Home() {
               />
               <div className="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
                 <p className="text-white font-semibold">{site.owner.name}</p>
-                <p className="text-neutral-500 text-sm mt-1">{site.owner.title}</p>
+                <p className="text-neutral-400 text-sm mt-1">{site.owner.title}</p>
               </div>
             </div>
           </Reveal>
@@ -297,33 +312,33 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           CTA
       ══════════════════════════════════════════ */}
-      <section className="section-padding py-32 md:py-44 divider border-t relative z-10 bg-black">
+      <section className="section-padding py-32 md:py-44 divider border-t relative z-10 bg-white dark:bg-black">
         <Reveal>
           <p className="label-sm mb-10">Available for backend projects.</p>
 
-          <h2 className="heading-hero text-white mb-12">
+          <h2 className="heading-hero text-neutral-900 dark:text-white mb-12">
             Building scalable
             <br />
-            <span className="text-neutral-800">APIs and systems</span>
+            <span className="text-neutral-300 dark:text-neutral-800">APIs and systems</span>
             <br />
-            for real-world products<span className="text-neutral-800">.</span>
+            for real-world products<span className="text-neutral-300 dark:text-neutral-800">.</span>
           </h2>
 
           <motion.div whileHover={{ x: 6 }} transition={{ duration: 0.25 }}>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-4 text-lg font-semibold text-white group"
+              className="inline-flex items-center gap-4 text-lg font-semibold text-neutral-900 dark:text-white group"
             >
-              <span className="border-b-2 border-white pb-0.5 group-hover:border-neutral-600 transition-colors duration-300">
+              <span className="border-b-2 border-neutral-900 dark:border-white pb-0.5 group-hover:border-neutral-400 dark:group-hover:border-neutral-600 transition-colors duration-300">
                 Start a project
               </span>
-              <span className="text-neutral-500 group-hover:text-white transition-colors">→</span>
+              <span className="text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors">→</span>
             </Link>
           </motion.div>
         </Reveal>
       </section>
 
-      <div className="relative z-10 bg-black">
+      <div className="relative z-10 bg-white dark:bg-black">
         <Footer />
       </div>
     </>

@@ -51,4 +51,6 @@ export const tools = [
   { name: 'Nginx',      category: 'server',     icon: 'https://cdn.simpleicons.org/nginx/ffffff' },
   { name: 'Linux',      category: 'os',         icon: 'https://cdn.simpleicons.org/linux/ffffff' },
   { name: 'Git',        category: 'version control', icon: 'https://cdn.simpleicons.org/git/ffffff' },
+  { name: 'GitHub',     category: 'platform',        icon: 'https://cdn.simpleicons.org/github/ffffff' },
+  { name: 'Django',     category: 'framework',       icon: 'https://cdn.simpleicons.org/django/ffffff' },
 ]

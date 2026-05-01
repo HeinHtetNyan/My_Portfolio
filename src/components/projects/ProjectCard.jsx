@@ -36,22 +36,18 @@ export default function ProjectCard({ repo, index }) {
       initial={{ opacity: 0, y: 40 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.9, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
-      className="grid grid-cols-1 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-8 md:gap-12 border-b border-white/[0.06] last:border-0 py-8 md:py-10 items-start"
+      className="grid grid-cols-1 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-8 md:gap-12 border-b border-black/[0.08] dark:border-white/[0.06] last:border-0 py-8 md:py-10 items-start"
     >
       {/* ── LEFT: styled project card ── */}
       <a
         href={repo.html_url}
         target="_blank"
         rel="noopener noreferrer"
-        className="group block overflow-hidden rounded-sm"
+        className="group block overflow-hidden rounded-sm bg-neutral-100 dark:bg-[#0e0e0e]"
         aria-label={`View ${repo.name} on GitHub`}
-        style={{ backgroundColor: '#0e0e0e' }}
       >
         {/* Top info bar */}
-        <div
-          className="flex items-center justify-between px-5 py-2.5"
-          style={{ backgroundColor: '#141414' }}
-        >
+        <div className="flex items-center justify-between px-5 py-2.5 bg-neutral-200 dark:bg-[#141414]">
           <span className="label-sm tabular-nums">{year}</span>
           <div className="flex items-center gap-3">
             {repo.language && (
@@ -74,13 +70,13 @@ export default function ProjectCard({ repo, index }) {
         {/* Title + arrow */}
         <div className="flex items-end justify-between px-5 pt-6 pb-5">
           <h3
-            className="text-white font-black tracking-tight break-words group-hover:opacity-80 transition-opacity duration-300"
+            className="text-neutral-900 dark:text-white font-black tracking-tight break-words group-hover:opacity-80 transition-opacity duration-300"
             style={{ fontSize: 'clamp(26px, 3.5vw, 52px)', lineHeight: 0.95, letterSpacing: '-0.03em' }}
           >
             {repo.name}
           </h3>
           <motion.span
-            className="text-white text-xl shrink-0 ml-4 mb-0.5"
+            className="text-neutral-900 dark:text-white text-xl shrink-0 ml-4 mb-0.5"
             whileHover={{ x: 3, y: -3 }}
             transition={{ duration: 0.2 }}
           >
@@ -89,7 +85,7 @@ export default function ProjectCard({ repo, index }) {
         </div>
 
         {/* Image */}
-        <div className="w-full overflow-hidden" style={{ backgroundColor: '#0e0e0e' }}>
+        <div className="w-full overflow-hidden bg-neutral-100 dark:bg-[#0e0e0e]">
           <motion.img
             src={previewImg}
             alt={repo.name}
@@ -106,16 +102,16 @@ export default function ProjectCard({ repo, index }) {
       {/* ── RIGHT: description ── */}
       <div className="pt-0 md:pt-10">
         {repo.description ? (
-          <p className="text-neutral-600 text-sm leading-relaxed">{repo.description}</p>
+          <p className="text-neutral-700 dark:text-neutral-300 text-base leading-relaxed">{repo.description}</p>
         ) : (
-          <p className="text-neutral-800 text-sm italic">No description.</p>
+          <p className="text-neutral-400 dark:text-neutral-600 text-base italic">No description.</p>
         )}
         {repo.homepage && (
           <a
             href={repo.homepage}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block mt-6 text-xs font-semibold text-neutral-600 border-b border-neutral-800 pb-0.5 hover:text-white hover:border-neutral-500 transition-colors duration-200"
+            className="inline-block mt-6 text-sm font-semibold text-neutral-500 dark:text-neutral-400 border-b border-neutral-400 dark:border-neutral-600 pb-0.5 hover:text-neutral-900 dark:hover:text-white hover:border-neutral-600 dark:hover:border-neutral-400 transition-colors duration-200"
           >
             Live demo ↗
           </a>
