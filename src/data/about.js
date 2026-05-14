@@ -1,3 +1,4 @@
+
 export const stats = [
   { label: 'experience', value: '1+ years' },
   { label: 'location',   value: 'Bangkok (ICT)' },

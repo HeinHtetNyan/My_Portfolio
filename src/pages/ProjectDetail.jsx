@@ -22,7 +22,7 @@ export default function ProjectDetail() {
         <meta property="og:title" content={`${project.title} — ${site.name}`} />
       </Helmet>
 
-      {/* ── Top info bar ── */}
+      {/* Top info bar */}
       <div
         className="flex items-center justify-between section-padding py-3"
         style={{ backgroundColor: project.barBg }}
@@ -31,7 +31,7 @@ export default function ProjectDetail() {
         <span className="label-sm">{project.tag}</span>
       </div>
 
-      {/* ── Hero title ── */}
+      {/* Hero title */}
       <section
         className="section-padding pt-16 pb-12"
         style={{ backgroundColor: project.accent }}
@@ -62,7 +62,7 @@ export default function ProjectDetail() {
         </motion.div>
       </section>
 
-      {/* ── Full-width image ── */}
+      {/* Full-width image */}
       <div style={{ backgroundColor: project.accent }}>
         <motion.img
           src={project.image}
@@ -75,7 +75,7 @@ export default function ProjectDetail() {
         />
       </div>
 
-      {/* ── Project details ── */}
+      {/* Project details */}
       <section className="section-padding py-20 md:py-28 divider border-t">
         <div className="grid md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-16 md:gap-24">
 
@@ -142,7 +142,7 @@ export default function ProjectDetail() {
         </div>
       </section>
 
-      {/* ── Next project ── */}
+      {/* Next project */}
       <section className="divider border-t">
         <Link
           to={`/projects/${nextProject.slug}`}

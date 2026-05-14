@@ -8,7 +8,7 @@ import { site } from '../config'
 
 const USERNAME = site.github.username
 
-/* ─── Skeleton row matching ProjectCard layout ─── */
+/* Skeleton row matching ProjectCard layout */
 function SkeletonRow({ index }) {
   return (
     <motion.div
@@ -32,7 +32,7 @@ function SkeletonRow({ index }) {
   )
 }
 
-/* ─── Status states ─── */
+/* Status states */
 function StateMessage({ heading, body }) {
   return (
     <div className="py-40 flex flex-col items-center text-center gap-4">
@@ -68,8 +68,8 @@ export default function Projects() {
         <meta property="og:title" content={`Projects — ${site.name}`} />
       </Helmet>
 
-      {/* ── Page header ── */}
       <section className="section-padding pt-36 pb-16">
+        {/* Page header */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -83,8 +83,8 @@ export default function Projects() {
         </motion.div>
       </section>
 
-      {/* ── Project list ── */}
       <section className="section-padding pb-20">
+        {/* Project list */}
         <div className="border-t border-black/[0.08] dark:border-white/[0.06]">
 
           {status === 'loading' && (

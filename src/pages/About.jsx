@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
@@ -5,6 +6,7 @@ import Footer from '../components/layout/Footer'
 import useScrollReveal from '../hooks/useScrollReveal'
 import { stats, bio, experience, tools } from '../data/about'
 import { site } from '../config'
+import { fetchCredlyBadges, groupBadges } from '../services/credly'
 
 function Reveal({ children, className = '', delay = 0 }) {
   const { ref, isVisible } = useScrollReveal({ threshold: 0.06 })
@@ -22,6 +24,17 @@ function Reveal({ children, className = '', delay = 0 }) {
 }
 
 export default function About() {
+  const [certGroups, setCertGroups]     = useState([])
+  const [certLoading, setCertLoading]   = useState(true)
+
+  useEffect(() => {
+    if (!site.credly.username) { setCertLoading(false); return }
+    fetchCredlyBadges()
+      .then((badges) => setCertGroups(groupBadges(badges)))
+      .catch(() => setCertGroups([]))
+      .finally(() => setCertLoading(false))
+  }, [])
+
   return (
     <>
       <Helmet>
@@ -188,6 +201,108 @@ export default function About() {
       </section>
 
       {/* ══════════════════════════════════════════
+          CERTIFICATIONS
+      ══════════════════════════════════════════ */}
+      <section className="section-padding py-0 divider border-t">
+
+        <div className="py-8 border-b border-black/[0.08] dark:border-white/[0.06]">
+          <p className="label-sm" style={{ fontFamily: 'monospace' }}>.certifications</p>
+        </div>
+
+        <div className="py-12 flex flex-col gap-10">
+          {certLoading ? (
+            /* Skeleton */
+            <div className="flex flex-col gap-10">
+              {[1, 2].map((g) => (
+                <div key={g}>
+                  <motion.div
+                    animate={{ opacity: [0.4, 0.7, 0.4] }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                  >
+                    <div className="h-7 w-32 rounded-md bg-neutral-200 dark:bg-neutral-800 mb-5" />
+                    <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(155px, 1fr))' }}>
+                      {[1, 2, 3, 4].map((c) => (
+                        <div key={c} className="rounded-xl p-5 bg-neutral-100 dark:bg-[#111111] flex flex-col items-center gap-3">
+                          <div className="w-20 h-20 rounded-full bg-neutral-200 dark:bg-neutral-800" />
+                          <div className="w-full space-y-2">
+                            <div className="h-3 w-3/4 mx-auto rounded bg-neutral-200 dark:bg-neutral-800" />
+                            <div className="h-3 w-1/2 mx-auto rounded bg-neutral-200 dark:bg-neutral-800" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                </div>
+              ))}
+            </div>
+          ) : certGroups.length === 0 ? (
+            <p className="text-neutral-400 dark:text-neutral-600 text-sm">No certifications found.</p>
+          ) : (
+            certGroups.map((group) => (
+              <div key={group.id}>
+                {/* Group header */}
+                <div className="mb-5">
+                  <span
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-mono tracking-widest uppercase border"
+                    style={{ color: group.accent, borderColor: group.accent + '55', backgroundColor: group.accent + '10' }}
+                  >
+                    <span>◆</span>
+                    {group.label}
+                  </span>
+                </div>
+
+                {/* Cert cards grid */}
+                <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(155px, 1fr))' }}>
+                  {group.certs.map((cert) => (
+                    <motion.a
+                      key={cert.id}
+                      href={cert.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                      className="flex flex-col items-center text-center gap-3 rounded-xl p-5 bg-neutral-100 dark:bg-[#111111] border border-black/[0.06] dark:border-white/[0.04] hover:border-black/20 dark:hover:border-white/10 transition-colors duration-200"
+                    >
+                      <div className="w-20 h-20 flex items-center justify-center">
+                        <img
+                          src={cert.image}
+                          alt={cert.name}
+                          loading="lazy"
+                          className="w-full h-full object-contain"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none'
+                            e.currentTarget.nextSibling.style.display = 'flex'
+                          }}
+                        />
+                        <div
+                          className="w-full h-full rounded-full items-center justify-center text-xl font-black text-neutral-400 dark:text-neutral-600"
+                          style={{ display: 'none' }}
+                        >
+                          {cert.issuer[0]}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-1">
+                        <p className="text-neutral-900 dark:text-white font-bold text-xs leading-snug">
+                          {cert.name}
+                        </p>
+                        <p className="text-neutral-400 dark:text-neutral-600 text-xs">{cert.issuer}</p>
+                        <p className="text-neutral-400 dark:text-neutral-700 text-xs mt-1">
+                          {cert.issued} · {cert.expiry}
+                        </p>
+                      </div>
+                    </motion.a>
+                  ))}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </section>
+
+{/* ══════════════════════════════════════════
           CTA
       ══════════════════════════════════════════ */}
       <section className="section-padding py-28 md:py-40 divider border-t">

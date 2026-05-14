@@ -38,7 +38,7 @@ export default function ProjectCard({ repo, index }) {
       transition={{ duration: 0.9, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
       className="grid grid-cols-1 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-8 md:gap-12 border-b border-black/[0.08] dark:border-white/[0.06] last:border-0 py-8 md:py-10 items-start"
     >
-      {/* ── LEFT: styled project card ── */}
+      {/* LEFT: styled project card */}
       <a
         href={repo.html_url}
         target="_blank"
@@ -99,7 +99,7 @@ export default function ProjectCard({ repo, index }) {
         </div>
       </a>
 
-      {/* ── RIGHT: description ── */}
+      {/* RIGHT: description */}
       <div className="pt-0 md:pt-10">
         {repo.description ? (
           <p className="text-neutral-700 dark:text-neutral-300 text-base leading-relaxed">{repo.description}</p>

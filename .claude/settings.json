@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.credly.com)",
+      "Bash(curl -s -I \"https://www.credly.com/users/hein-htet-nyan/badges.json\")",
+      "Bash(curl -s \"https://www.credly.com/users/hein-htet-nyan/badges.json\")",
+      "mcp__claude_ai_Google_Drive__search_files",
+      "mcp__claude_ai_Google_Drive__get_file_metadata",
+      "mcp__claude_ai_Google_Drive__list_recent_files",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/)",
+      "Bash(node -e \"const p = require\\('/home/hein-htet-nyan/Desktop/My_Portfolio/node_modules/pdfjs-dist/package.json'\\); console.log\\(p.version\\)\")",
+      "Bash(pkill -f \"vite --port\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5174/)",
+      "Bash(npm uninstall *)"
+    ]
+  }
+}

@@ -34,6 +34,9 @@ export const site = {
   github: {
     username: env.VITE_GITHUB_USERNAME ?? '',
   },
+  credly: {
+    username: env.VITE_CREDLY_USERNAME ?? '',
+  },
 }
 
 export const socialLinks = [

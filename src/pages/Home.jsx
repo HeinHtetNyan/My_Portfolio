@@ -6,29 +6,8 @@ import Footer from '../components/layout/Footer'
 import useScrollReveal from '../hooks/useScrollReveal'
 import { fetchRepos } from '../services/github'
 import { site } from '../config'
-import { useTheme } from '../context/ThemeContext'
 
-/* ─── Language → card theme (dark) ─── */
-const LANG_THEME_DARK = {
-  TypeScript:  { accent: '#080d1a', titleColor: '#60a5fa', barBg: '#0b1120' },
-  JavaScript:  { accent: '#1a1600', titleColor: '#fbbf24', barBg: '#221c00' },
-  Python:      { accent: '#0a1020', titleColor: '#818cf8', barBg: '#0d1428' },
-  Go:          { accent: '#001a14', titleColor: '#34d399', barBg: '#00221a' },
-  Rust:        { accent: '#1a0800', titleColor: '#fb923c', barBg: '#220e00' },
-  default:     { accent: '#111111', titleColor: '#ffffff', barBg: '#1a1a1a' },
-}
-
-/* ─── Language → card theme (light) ─── */
-const LANG_THEME_LIGHT = {
-  TypeScript:  { accent: '#dbeafe', titleColor: '#1d4ed8', barBg: '#bfdbfe' },
-  JavaScript:  { accent: '#fef9c3', titleColor: '#a16207', barBg: '#fef08a' },
-  Python:      { accent: '#ede9fe', titleColor: '#5b21b6', barBg: '#ddd6fe' },
-  Go:          { accent: '#d1fae5', titleColor: '#065f46', barBg: '#a7f3d0' },
-  Rust:        { accent: '#ffedd5', titleColor: '#c2410c', barBg: '#fed7aa' },
-  default:     { accent: '#f5f5f5', titleColor: '#171717', barBg: '#e5e5e5' },
-}
-
-/* ─── Scroll-reveal wrapper ─── */
+/* Scroll-reveal wrapper */
 function Reveal({ children, className = '', delay = 0, y = 50 }) {
   const { ref, isVisible } = useScrollReveal({ threshold: 0.1 })
   return (
@@ -44,97 +23,121 @@ function Reveal({ children, className = '', delay = 0, y = 50 }) {
   )
 }
 
-/* ─── Sticky layered project card ─── */
+/* Project card */
 function ProjectCard({ repo, index }) {
-  const { isDark } = useTheme()
-  const LANG_THEME = isDark ? LANG_THEME_DARK : LANG_THEME_LIGHT
-  const theme = LANG_THEME[repo.language] ?? LANG_THEME.default
-  const year = new Date(repo.pushed_at || repo.updated_at).getFullYear()
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.06 })
   const fallbackImg = `https://opengraph.githubassets.com/1/${site.github.username}/${repo.name}`
   const image = repo.openGraphImageUrl ?? fallbackImg
 
+  const displayName = repo.name
+    .replace(/[-_]/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+
+  const topics = repo.topics ?? []
+  const statusKeywords = new Set(['complete', 'in-progress', 'wip', 'portfolio', 'showcase'])
+  const isInProgress = topics.includes('in-progress') || topics.includes('wip')
+  const isComplete = topics.includes('complete')
+  const status = isInProgress ? 'In Progress' : isComplete ? 'Complete' : null
+
+  const techTags = [
+    ...(repo.language ? [repo.language] : []),
+    ...topics
+      .filter((t) => !statusKeywords.has(t))
+      .map((t) => t.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())),
+  ]
+
   return (
-    <div style={{ position: 'sticky', top: '64px', zIndex: index + 1 }}>
+    <motion.article
+      ref={ref}
+      initial={{ opacity: 0, y: 32 }}
+      animate={isVisible ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      className="group flex flex-col rounded-2xl overflow-hidden bg-neutral-100 dark:bg-[#111111]"
+    >
       <a
         href={repo.html_url}
         target="_blank"
         rel="noopener noreferrer"
-        className="group block"
-        aria-label={`View ${repo.name} on GitHub`}
+        className="flex flex-col flex-1"
+        aria-label={`View ${displayName} on GitHub`}
       >
-        {/* Top info bar */}
-        <div
-          className="flex items-center justify-between px-6 md:px-12 lg:px-24 py-3"
-          style={{ backgroundColor: theme.barBg }}
-        >
-          <span className="label-sm tabular-nums">{year}</span>
-          <span className="label-sm">{repo.language ?? 'Code'}</span>
-        </div>
-
-        {/* Title + arrow */}
-        <div
-          className="flex items-end justify-between px-6 md:px-12 lg:px-24 pt-10 pb-8"
-          style={{ backgroundColor: theme.accent }}
-        >
-          <h3
-            className="font-black tracking-tight transition-opacity duration-300 group-hover:opacity-80"
-            style={{
-              fontSize: 'clamp(48px, 8vw, 110px)',
-              lineHeight: 0.9,
-              letterSpacing: '-0.04em',
-              color: theme.titleColor,
-            }}
-          >
-            {repo.name}
-          </h3>
-          <motion.span
-            className="text-3xl md:text-4xl shrink-0 ml-6 mb-1"
-            style={{ color: theme.titleColor }}
-            whileHover={{ x: 4, y: -4 }}
-            transition={{ duration: 0.2 }}
-          >
-            ↗
-          </motion.span>
-        </div>
-
-        {/* Full-width image */}
-        <div className="w-full overflow-hidden" style={{ backgroundColor: theme.accent }}>
+        {/* Preview image */}
+        <div className="overflow-hidden">
           <motion.img
             src={image}
-            alt={repo.name}
+            alt={displayName}
             loading="lazy"
             className="w-full object-cover"
-            style={{ aspectRatio: '16 / 7', display: 'block' }}
+            style={{ aspectRatio: '16 / 9', display: 'block' }}
             onError={(e) => { e.currentTarget.src = fallbackImg }}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           />
         </div>
-      </a>
-    </div>
-  )
-}
 
-/* ─── Skeleton card ─── */
-function SkeletonCard({ index }) {
-  return (
-    <div style={{ position: 'sticky', top: '64px', zIndex: index + 1 }}>
-      <motion.div
-        animate={{ opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: index * 0.2 }}
-        className="bg-neutral-50 dark:bg-neutral-950"
-      >
-        <div className="h-10 bg-neutral-200 dark:bg-neutral-900" />
-        <div className="h-36 bg-neutral-50 dark:bg-neutral-950 px-6 md:px-12 lg:px-24 flex items-end pb-8">
-          <div className="h-16 w-2/3 bg-neutral-200 dark:bg-neutral-900 rounded" />
+        {/* Card body */}
+        <div className="flex flex-col flex-1 gap-3 p-5">
+          {/* Title + status badge */}
+          <div className="flex items-start gap-3">
+            <h3 className="flex-1 text-base font-bold leading-snug tracking-tight text-neutral-900 dark:text-white group-hover:opacity-75 transition-opacity duration-200">
+              {displayName}
+            </h3>
+            {status && (
+              <span className="shrink-0 mt-0.5 text-xs font-medium px-2.5 py-0.5 rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 bg-white dark:bg-neutral-900">
+                {status}
+              </span>
+            )}
+          </div>
+
+          {/* Description */}
+          {repo.description && (
+            <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 line-clamp-2">
+              {repo.description}
+            </p>
+          )}
+
+          {/* Tech tags */}
+          {techTags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
+              {techTags.slice(0, 6).map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs px-2.5 py-1 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
-        <div className="w-full bg-neutral-200 dark:bg-neutral-900" style={{ aspectRatio: '16 / 7' }} />
-      </motion.div>
-    </div>
+      </a>
+    </motion.article>
   )
 }
 
-/* ─── Page ─── */
+/* Skeleton card */
+function SkeletonCard() {
+  return (
+    <motion.div
+      animate={{ opacity: [0.4, 0.7, 0.4] }}
+      transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+      className="rounded-2xl overflow-hidden bg-neutral-100 dark:bg-[#111111]"
+    >
+      <div className="bg-neutral-200 dark:bg-neutral-900" style={{ aspectRatio: '16 / 9' }} />
+      <div className="p-5 space-y-3">
+        <div className="h-5 w-3/4 rounded bg-neutral-200 dark:bg-neutral-800" />
+        <div className="h-4 w-full rounded bg-neutral-200 dark:bg-neutral-800" />
+        <div className="h-4 w-2/3 rounded bg-neutral-200 dark:bg-neutral-800" />
+        <div className="flex gap-2 pt-1">
+          <div className="h-6 w-16 rounded-full bg-neutral-200 dark:bg-neutral-800" />
+          <div className="h-6 w-20 rounded-full bg-neutral-200 dark:bg-neutral-800" />
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+/* Page */
 export default function Home() {
   const [repos, setRepos] = useState([])
   const [loading, setLoading] = useState(true)
@@ -233,9 +236,9 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════
-          STACKED PROJECT SHOWCASE
+          PROJECT SHOWCASE
       ══════════════════════════════════════════ */}
-      <section className="pt-20 pb-0">
+      <section className="pt-20 pb-16">
 
         <Reveal className="section-padding flex items-center justify-between mb-10">
           <p className="label-sm">Selected work</p>
@@ -247,24 +250,21 @@ export default function Home() {
           </Link>
         </Reveal>
 
-        <div>
+        <div className="section-padding grid grid-cols-1 sm:grid-cols-2 gap-5">
           {loading
-            ? [0, 1, 2, 3].map((i) => <SkeletonCard key={i} index={i} />)
+            ? [0, 1, 2, 3].map((i) => <SkeletonCard key={i} />)
             : showcaseItems.length > 0
               ? showcaseItems.map((repo, i) => (
                   <ProjectCard key={repo.id} repo={repo} index={i} />
                 ))
               : (
-                <div className="section-padding py-20 text-neutral-400 dark:text-neutral-700 text-sm">
+                <div className="col-span-2 py-20 text-neutral-400 dark:text-neutral-700 text-sm">
                   No public repositories found.
                 </div>
               )
           }
         </div>
       </section>
-
-      {/* Spacer so content below clears the sticky cards */}
-      <div style={{ height: `${showcaseItems.length * 20}px` }} />
 
       {/* ══════════════════════════════════════════
           ABOUT PREVIEW
