@@ -1,12 +1,12 @@
 
 export const stats = [
   { label: 'experience', value: '1+ years' },
-  { label: 'location',   value: 'Bangkok (ICT)' },
+  { label: 'location',   value: 'Bangkok' },
   { label: 'status',     value: 'Open to work' },
 ]
 
 export const bio = [
-  `I'm a backend developer currently studying Information and Communication Technology, with a background in customer service and data work.`,
+  `I'm a backend developer with a degree in Information and Communication Technology from Rangsit University. Before getting into tech, I worked in customer service and accounting which shaped how I approach problems: carefully, and with the bigger picture in mind.`,
   `That experience helped me develop strong problem-solving skills, attention to detail, and the ability to work in fast-paced environments — which I now apply to building backend systems.`,
   `I focus on Python, FastAPI, and PostgreSQL, and I'm continuously improving my skills by building real projects and learning modern backend practices.`,
 ]
@@ -35,10 +35,17 @@ export const experience = [
   },
   {
     id: 4,
-    period: '2026 Jan — Now',
+    period: '2026 Jan — June',
     company: 'Infinity Digital LLC',
     role: 'Backend Developer Intern',
     description: 'Built and maintained backend APIs using FastAPI for an airline booking system. Designed PostgreSQL database, implemented booking logic and validation, integrated external APIs, and improved performance with Redis caching.',
+  },
+  {
+    id: 5,
+    period: '2026 June — Now',
+    company: 'Freelance',
+    role: 'Full-Stack Developer',
+    description: 'Taking on full-stack projects independently designing and building REST APIs, managing databases, and developing frontend interfaces. Delivering complete solutions from architecture to deployment for clients and businesses.',
   },
 ]
 

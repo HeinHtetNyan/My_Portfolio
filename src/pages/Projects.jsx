@@ -80,6 +80,11 @@ export default function Projects() {
             Projects
             <span className="text-neutral-300 dark:text-neutral-800">.</span>
           </h1>
+          {status === 'success' && repos.length > 0 && (
+            <p className="mt-4 text-sm text-neutral-400 dark:text-neutral-500 tracking-wide">
+              {repos.length} public repositories
+            </p>
+          )}
         </motion.div>
       </section>
 
