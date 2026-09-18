@@ -311,7 +311,7 @@ export default function About() {
             className="text-neutral-900 dark:text-white font-black leading-[1.05] tracking-tight mb-16 max-w-4xl"
             style={{ fontSize: 'clamp(36px, 6vw, 86px)', letterSpacing: '-0.03em' }}
           >
-            Available for backend projects. Let's discuss your idea.
+            Available for new projects. Let's discuss your idea.
           </h2>
 
           <Link

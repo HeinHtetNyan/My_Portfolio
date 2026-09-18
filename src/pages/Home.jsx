@@ -275,7 +275,7 @@ export default function Home() {
           <Reveal>
             <p className="label-sm mb-8">About</p>
             <p className="text-3xl md:text-4xl xl:text-5xl font-bold leading-[1.1] tracking-tight text-neutral-900 dark:text-white mb-10">
-              I design and build scalable backend systems that power real-world applications. Experienced in Python, FastAPI, PostgreSQL, and distributed system design.
+              I design and build complete production systems — from backend APIs to frontend interfaces and mobile apps. Experienced in Python, FastAPI, React, Flutter, and PostgreSQL.
             </p>
             <Link
               to="/about"
@@ -314,14 +314,14 @@ export default function Home() {
       ══════════════════════════════════════════ */}
       <section className="section-padding py-32 md:py-44 divider border-t relative z-10 bg-white dark:bg-black">
         <Reveal>
-          <p className="label-sm mb-10">Available for backend projects.</p>
+          <p className="label-sm mb-10">Available for new projects.</p>
 
           <h2 className="heading-hero text-neutral-900 dark:text-white mb-12">
-            Building scalable
+            Building complete
             <br />
-            <span className="text-neutral-300 dark:text-neutral-800">APIs and systems</span>
+            <span className="text-neutral-300 dark:text-neutral-800">products and systems</span>
             <br />
-            for real-world products<span className="text-neutral-300 dark:text-neutral-800">.</span>
+            for real-world use<span className="text-neutral-300 dark:text-neutral-800">.</span>
           </h2>
 
           <motion.div whileHover={{ x: 6 }} transition={{ duration: 0.25 }}>

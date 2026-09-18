@@ -1,14 +1,14 @@
 
 export const stats = [
   { label: 'experience', value: '1+ years' },
-  { label: 'location',   value: 'Bangkok' },
+  { label: 'location',   value: 'Pathum Thani, TH' },
   { label: 'status',     value: 'Open to work' },
 ]
 
 export const bio = [
-  `I'm a backend developer with a degree in Information and Communication Technology from Rangsit University. Before getting into tech, I worked in customer service and accounting which shaped how I approach problems: carefully, and with the bigger picture in mind.`,
-  `That experience helped me develop strong problem-solving skills, attention to detail, and the ability to work in fast-paced environments — which I now apply to building backend systems.`,
-  `I focus on Python, FastAPI, and PostgreSQL, and I'm continuously improving my skills by building real projects and learning modern backend practices.`,
+  `I'm a full-stack developer with a degree in Information and Communication Technology from Rangsit University. Before getting into tech, I worked in customer service and accounting which shaped how I approach problems: carefully, and with the bigger picture in mind.`,
+  `That experience helped me develop strong problem-solving skills, attention to detail, and the ability to work in fast-paced environments — which I now apply to building complete production systems.`,
+  `I work across Python/FastAPI backends, React frontends, and Flutter mobile apps, and I'm continuously improving by shipping real projects for real businesses.`,
 ]
 
 export const experience = [
@@ -45,13 +45,16 @@ export const experience = [
     period: '2026 June — Now',
     company: 'Freelance',
     role: 'Full-Stack Developer',
-    description: 'Taking on full-stack projects independently designing and building REST APIs, managing databases, and developing frontend interfaces. Delivering complete solutions from architecture to deployment for clients and businesses.',
+    description: 'Independently designing and building REST APIs, databases, frontend interfaces, and mobile apps for real businesses — delivering complete solutions from architecture to deployment.',
   },
 ]
 
 export const tools = [
   { name: 'Python',     category: 'language',   icon: 'https://cdn.simpleicons.org/python/ffffff' },
   { name: 'FastAPI',    category: 'framework',  icon: 'https://cdn.simpleicons.org/fastapi/ffffff' },
+  { name: 'React',      category: 'framework',  icon: 'https://cdn.simpleicons.org/react/ffffff' },
+  { name: 'TypeScript', category: 'language',   icon: 'https://cdn.simpleicons.org/typescript/ffffff' },
+  { name: 'Flutter',    category: 'framework',  icon: 'https://cdn.simpleicons.org/flutter/ffffff' },
   { name: 'Node.js',    category: 'runtime',    icon: 'https://cdn.simpleicons.org/nodedotjs/ffffff' },
   { name: 'PostgreSQL', category: 'database',   icon: 'https://cdn.simpleicons.org/postgresql/ffffff' },
   { name: 'Redis',      category: 'cache',      icon: 'https://cdn.simpleicons.org/redis/ffffff' },
@@ -60,5 +63,4 @@ export const tools = [
   { name: 'Linux',      category: 'os',         icon: 'https://cdn.simpleicons.org/linux/ffffff' },
   { name: 'Git',        category: 'version control', icon: 'https://cdn.simpleicons.org/git/ffffff' },
   { name: 'GitHub',     category: 'platform',        icon: 'https://cdn.simpleicons.org/github/ffffff' },
-  { name: 'Django',     category: 'framework',       icon: 'https://cdn.simpleicons.org/django/ffffff' },
 ]
