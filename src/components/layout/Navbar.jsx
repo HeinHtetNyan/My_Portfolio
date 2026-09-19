@@ -64,13 +64,13 @@ export default function Navbar() {
           {site.name}
         </Link>
 
-        <ul className="flex items-center gap-6 md:gap-8" role="list">
+        <ul className="flex items-center gap-3 sm:gap-6 md:gap-8" role="list">
           {navLinks.map((link) => (
             <li key={link.path}>
               <NavLink
                 to={link.path}
                 className={({ isActive }) =>
-                  `text-base transition-colors duration-200 relative ${
+                  `text-sm sm:text-base transition-colors duration-200 relative ${
                     isActive
                       ? 'text-neutral-900 dark:text-white'
                       : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
@@ -92,6 +92,16 @@ export default function Navbar() {
               </NavLink>
             </li>
           ))}
+
+          <li>
+            <a
+              href="/Hein_Htet_Nyan_Resume.pdf"
+              download
+              className="text-sm sm:text-base font-semibold text-neutral-900 dark:text-white border-b border-neutral-900 dark:border-white pb-0.5 hover:border-neutral-400 hover:text-neutral-500 dark:hover:border-neutral-600 dark:hover:text-neutral-400 transition-all duration-200"
+            >
+              Résumé
+            </a>
+          </li>
 
           <li>
             <button

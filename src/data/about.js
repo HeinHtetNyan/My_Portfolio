@@ -6,46 +6,25 @@ export const stats = [
 ]
 
 export const bio = [
-  `I'm a full-stack developer with a degree in Information and Communication Technology from Rangsit University. Before getting into tech, I worked in customer service and accounting which shaped how I approach problems: carefully, and with the bigger picture in mind.`,
-  `That experience helped me develop strong problem-solving skills, attention to detail, and the ability to work in fast-paced environments — which I now apply to building complete production systems.`,
-  `I work across Python/FastAPI backends, React frontends, and Flutter mobile apps, and I'm continuously improving by shipping real projects for real businesses.`,
+  `I'm a full-stack developer with a degree in Information and Communication Technology from Rangsit University, building complete production systems from backend APIs to frontend interfaces and mobile apps.`,
+  `I care about clean architecture and scalable system design, and I'm continuously improving by shipping real projects for real businesses — not just tutorials or side experiments.`,
+  `I work across Python/FastAPI backends, React frontends, and Flutter mobile apps, handling everything from database design to deployment infrastructure.`,
 ]
 
 export const experience = [
   {
     id: 1,
-    period: '2019 — 2020',
-    company: 'Infinity Digital Store',
-    role: 'Customer Service',
-    description: 'Handled customer inquiries and data entry while improving communication and problem-solving skills in a fast-paced environment.',
+    period: '2025 — Present',
+    company: 'Freelance',
+    role: 'Full-Stack Developer',
+    description: 'Designing and building full-stack POS, ERP, and mobile applications end-to-end for multiple business and personal clients — backend APIs, databases, frontend interfaces, and deployment infrastructure.',
   },
   {
     id: 2,
-    period: '2021 — 2023',
-    company: 'TK Plastic',
-    role: 'Accounting Assistant',
-    description: 'Managed daily financial records and transactions using Google Sheets. Maintained accurate expense tracking and supported organization and review of business finances.',
-  },
-  {
-    id: 3,
-    period: '2023 — 2026',
-    company: 'Studying and freelance Projects',
-    role: 'Backend Developer',
-    description: 'Built backend systems and APIs using Python, FastAPI, and PostgreSQL. Focused on clean architecture and scalable system design through freelance and academic projects.',
-  },
-  {
-    id: 4,
-    period: '2026 Jan — June',
+    period: '2026 Jan — Jun',
     company: 'Infinity Digital LLC',
     role: 'Backend Developer Intern',
-    description: 'Built and maintained backend APIs using FastAPI for an airline booking system. Designed PostgreSQL database, implemented booking logic and validation, integrated external APIs, and improved performance with Redis caching.',
-  },
-  {
-    id: 5,
-    period: '2026 June — Now',
-    company: 'Freelance',
-    role: 'Full-Stack Developer',
-    description: 'Independently designing and building REST APIs, databases, frontend interfaces, and mobile apps for real businesses — delivering complete solutions from architecture to deployment.',
+    description: 'Built and maintained backend APIs using FastAPI for an airline booking system. Implemented booking logic and validation, integrated PostgreSQL and Redis, and built JWT-based authentication flows.',
   },
 ]
 

@@ -113,7 +113,7 @@ export default function ProjectCard({ repo, index }) {
             rel="noopener noreferrer"
             className="inline-block mt-6 text-sm font-semibold text-neutral-500 dark:text-neutral-400 border-b border-neutral-400 dark:border-neutral-600 pb-0.5 hover:text-neutral-900 dark:hover:text-white hover:border-neutral-600 dark:hover:border-neutral-400 transition-colors duration-200"
           >
-            Live demo ↗
+            Live ↗
           </a>
         )}
       </div>

@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 import Footer from '../components/layout/Footer'
 import useScrollReveal from '../hooks/useScrollReveal'
-import { fetchRepos } from '../services/github'
+import { showcaseProjects } from '../data/showcase'
 import { site } from '../config'
 
 /* Scroll-reveal wrapper */
@@ -23,28 +22,9 @@ function Reveal({ children, className = '', delay = 0, y = 50 }) {
   )
 }
 
-/* Project card */
-function ProjectCard({ repo, index }) {
+/* Curated project card */
+function ProjectCard({ project, index }) {
   const { ref, isVisible } = useScrollReveal({ threshold: 0.06 })
-  const fallbackImg = `https://opengraph.githubassets.com/1/${site.github.username}/${repo.name}`
-  const image = repo.openGraphImageUrl ?? fallbackImg
-
-  const displayName = repo.name
-    .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase())
-
-  const topics = repo.topics ?? []
-  const statusKeywords = new Set(['complete', 'in-progress', 'wip', 'portfolio', 'showcase'])
-  const isInProgress = topics.includes('in-progress') || topics.includes('wip')
-  const isComplete = topics.includes('complete')
-  const status = isInProgress ? 'In Progress' : isComplete ? 'Complete' : null
-
-  const techTags = [
-    ...(repo.language ? [repo.language] : []),
-    ...topics
-      .filter((t) => !statusKeywords.has(t))
-      .map((t) => t.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())),
-  ]
 
   return (
     <motion.article
@@ -55,21 +35,20 @@ function ProjectCard({ repo, index }) {
       className="group flex flex-col rounded-2xl overflow-hidden bg-neutral-100 dark:bg-[#111111]"
     >
       <a
-        href={repo.html_url}
+        href={project.liveUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="flex flex-col flex-1"
-        aria-label={`View ${displayName} on GitHub`}
+        aria-label={`Open ${project.title}`}
       >
         {/* Preview image */}
-        <div className="overflow-hidden">
+        <div className={`overflow-hidden flex items-center justify-center bg-neutral-200 dark:bg-neutral-900 ${project.orientation === 'portrait' ? 'aspect-[16/9]' : ''}`}>
           <motion.img
-            src={image}
-            alt={displayName}
+            src={project.image}
+            alt={project.title}
             loading="lazy"
-            className="w-full object-cover"
-            style={{ aspectRatio: '16 / 9', display: 'block' }}
-            onError={(e) => { e.currentTarget.src = fallbackImg }}
+            className={project.orientation === 'portrait' ? 'h-full w-auto object-cover' : 'w-full object-cover'}
+            style={project.orientation === 'portrait' ? {} : { aspectRatio: '16 / 9', display: 'block' }}
             whileHover={{ scale: 1.03 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           />
@@ -77,29 +56,17 @@ function ProjectCard({ repo, index }) {
 
         {/* Card body */}
         <div className="flex flex-col flex-1 gap-3 p-5">
-          {/* Title + status badge */}
-          <div className="flex items-start gap-3">
-            <h3 className="flex-1 text-base font-bold leading-snug tracking-tight text-neutral-900 dark:text-white group-hover:opacity-75 transition-opacity duration-200">
-              {displayName}
-            </h3>
-            {status && (
-              <span className="shrink-0 mt-0.5 text-xs font-medium px-2.5 py-0.5 rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 bg-white dark:bg-neutral-900">
-                {status}
-              </span>
-            )}
-          </div>
+          <h3 className="text-base font-bold leading-snug tracking-tight text-neutral-900 dark:text-white group-hover:opacity-75 transition-opacity duration-200">
+            {project.title}
+          </h3>
 
-          {/* Description */}
-          {repo.description && (
-            <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 line-clamp-2">
-              {repo.description}
-            </p>
-          )}
+          <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 line-clamp-2">
+            {project.description}
+          </p>
 
-          {/* Tech tags */}
-          {techTags.length > 0 && (
+          {project.tech.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
-              {techTags.slice(0, 6).map((tag) => (
+              {project.tech.map((tag) => (
                 <span
                   key={tag}
                   className="text-xs px-2.5 py-1 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300"
@@ -115,46 +82,8 @@ function ProjectCard({ repo, index }) {
   )
 }
 
-/* Skeleton card */
-function SkeletonCard() {
-  return (
-    <motion.div
-      animate={{ opacity: [0.4, 0.7, 0.4] }}
-      transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-      className="rounded-2xl overflow-hidden bg-neutral-100 dark:bg-[#111111]"
-    >
-      <div className="bg-neutral-200 dark:bg-neutral-900" style={{ aspectRatio: '16 / 9' }} />
-      <div className="p-5 space-y-3">
-        <div className="h-5 w-3/4 rounded bg-neutral-200 dark:bg-neutral-800" />
-        <div className="h-4 w-full rounded bg-neutral-200 dark:bg-neutral-800" />
-        <div className="h-4 w-2/3 rounded bg-neutral-200 dark:bg-neutral-800" />
-        <div className="flex gap-2 pt-1">
-          <div className="h-6 w-16 rounded-full bg-neutral-200 dark:bg-neutral-800" />
-          <div className="h-6 w-20 rounded-full bg-neutral-200 dark:bg-neutral-800" />
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
 /* Page */
 export default function Home() {
-  const [repos, setRepos] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    if (!site.github.username) { setLoading(false); return }
-    fetchRepos(site.github.username)
-      .then((data) => {
-        const starred = data.filter((repo) => repo.stargazers_count > 0)
-        setRepos(starred.length > 0 ? starred : data)
-      })
-      .catch(() => setRepos([]))
-      .finally(() => setLoading(false))
-  }, [])
-
-  const showcaseItems = repos
-
   return (
     <>
       <Helmet>
@@ -194,10 +123,9 @@ export default function Home() {
             {site.owner.title.split(' ')[0]}
             <br />
             <span className="text-neutral-300 dark:text-neutral-800">
-              {site.owner.title.split(' ').slice(1).join(' ')} &
+              {site.owner.title.split(' ').slice(1).join(' ')}
+              <span className="text-neutral-300 dark:text-neutral-800">.</span>
             </span>
-            <br />
-            System Builder<span className="text-neutral-300 dark:text-neutral-800">.</span>
           </motion.h1>
         </div>
 
@@ -223,6 +151,13 @@ export default function Home() {
             >
               Contact
             </Link>
+            <a
+              href="/Hein_Htet_Nyan_Resume.pdf"
+              download
+              className="text-base text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"
+            >
+              Download CV
+            </a>
           </div>
         </motion.div>
 
@@ -251,18 +186,9 @@ export default function Home() {
         </Reveal>
 
         <div className="section-padding grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {loading
-            ? [0, 1, 2, 3].map((i) => <SkeletonCard key={i} />)
-            : showcaseItems.length > 0
-              ? showcaseItems.map((repo, i) => (
-                  <ProjectCard key={repo.id} repo={repo} index={i} />
-                ))
-              : (
-                <div className="col-span-2 py-20 text-neutral-400 dark:text-neutral-700 text-sm">
-                  No public repositories found.
-                </div>
-              )
-          }
+          {showcaseProjects.map((project, i) => (
+            <ProjectCard key={project.id} project={project} index={i} />
+          ))}
         </div>
       </section>
 
