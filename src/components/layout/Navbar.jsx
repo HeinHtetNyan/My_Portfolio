@@ -97,9 +97,9 @@ export default function Navbar() {
             <a
               href="/Hein_Htet_Nyan_Resume.pdf"
               download
-              className="text-sm sm:text-base font-semibold text-neutral-900 dark:text-white border-b border-neutral-900 dark:border-white pb-0.5 hover:border-neutral-400 hover:text-neutral-500 dark:hover:border-neutral-600 dark:hover:text-neutral-400 transition-all duration-200"
+              className="text-sm sm:text-base text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors duration-200"
             >
-              Résumé
+              Resume
             </a>
           </li>
 
